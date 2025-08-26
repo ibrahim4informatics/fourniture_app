@@ -1,0 +1,293 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Modern Accent Chair",
+      "description": "A vibrant upholstered accent chair for a stylish living space.",
+      "thumbnail": "https://images.pexels.com/photos/2179214/pexels-photo-2179214.jpeg",
+      "price": 129.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://images.pexels.com/photos/2179214/pexels-photo-2179214.jpeg"
+        },
+        {
+          "order": 2,
+          "link": "https://images.pexels.com/photos/2179215/pexels-photo-2179215.jpeg"
+        }
+      ],
+      "details": "<p>This <strong>modern accent chair</strong> brings a pop of color to your home. Upholstered in durable fabric with comfortable padding, it's perfect for reading nooks, bedrooms, or living spaces. Pair it with a small side table for a cozy setup.</p>",
+      "category": "chairs",
+      "rating": 4.6,
+      "availableSizes": [
+        "Small",
+        "Medium",
+        "Large"
+      ],
+      "availableColors": [
+        "Blue",
+        "Gray",
+        "Yellow"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Scandi Display Cabinet",
+      "description": "Minimalist cabinet with open shelves and storage cubbies.",
+      "thumbnail": "https://images.pexels.com/photos/5824523/pexels-photo-5824523.jpeg",
+      "price": 249.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://images.pexels.com/photos/5824523/pexels-photo-5824523.jpeg"
+        },
+        {
+          "order": 2,
+          "link": "https://images.pexels.com/photos/5824524/pexels-photo-5824524.jpeg"
+        }
+      ],
+      "details": "<p>The <em>Scandi display cabinet</em> offers open shelves for display and hidden storage for organization. Crafted with clean lines and natural wood tones, it embodies Scandinavian minimalism, making it suitable for any modern home.</p>",
+      "category": "storage",
+      "rating": 4.3,
+      "availableSizes": [
+        "One Size"
+      ],
+      "availableColors": [
+        "White",
+        "Natural Wood",
+        "Black"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Black Sectional Sofa",
+      "description": "Elegant L-shaped sectional with premium upholstery.",
+      "thumbnail": "https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg",
+      "price": 899.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg"
+        },
+        {
+          "order": 2,
+          "link": "https://images.pexels.com/photos/276584/pexels-photo-276584.jpeg"
+        }
+      ],
+      "details": "<p>This <strong>black sectional sofa</strong> features plush cushions and a versatile L-shape design, making it the centerpiece of your living room. Its durable fabric and sturdy frame provide long-lasting comfort for gatherings and lounging.</p>",
+      "category": "sofas",
+      "rating": 4.8,
+      "availableSizes": [
+        "2-Seater",
+        "3-Seater",
+        "L-Shape Large"
+      ],
+      "availableColors": [
+        "Black",
+        "Gray",
+        "Beige"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Cozy Lounge Setup",
+      "description": "Soft seating arrangement with coffee table and cushions.",
+      "thumbnail": "https://images.pexels.com/photos/31970870/pexels-photo-31970870.jpeg",
+      "price": 599.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://images.pexels.com/photos/31970870/pexels-photo-31970870.jpeg"
+        },
+        {
+          "order": 2,
+          "link": "https://images.pexels.com/photos/31970871/pexels-photo-31970871.jpeg"
+        }
+      ],
+      "details": "<p>Create a <em>cozy lounge</em> with this curated setup featuring a soft seating arrangement, coffee table, and accent cushions. Perfect for indoor relaxation or a stylish sunroom corner.</p>",
+      "category": "sets",
+      "rating": 4.5,
+      "availableSizes": [
+        "Standard"
+      ],
+      "availableColors": [
+        "Cream",
+        "Brown",
+        "Gray"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Wooden Coffee Table",
+      "description": "Rustic oak table with sturdy legs and smooth finish.",
+      "thumbnail": "https://images.pexels.com/photos/27059629/pexels-photo-27059629.jpeg",
+      "price": 179.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://images.pexels.com/photos/27059629/pexels-photo-27059629.jpeg"
+        },
+        {
+          "order": 2,
+          "link": "https://images.pexels.com/photos/27059630/pexels-photo-27059630.jpeg"
+        }
+      ],
+      "details": "<p>This <strong>wooden coffee table</strong> is crafted from high-quality oak, featuring a rustic look and smooth finish. Its simple yet durable design makes it an excellent addition to both modern and classic interiors.</p>",
+      "category": "tables",
+      "rating": 4.2,
+      "availableSizes": [
+        "Small",
+        "Medium",
+        "Large"
+      ],
+      "availableColors": [
+        "Oak",
+        "Walnut",
+        "Black"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Mid-Century Armchair",
+      "description": "Comfortable armchair with vintage flair and wooden frame.",
+      "thumbnail": "https://images.pexels.com/photos/6312017/pexels-photo-6312017.jpeg",
+      "price": 219.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://images.pexels.com/photos/6312017/pexels-photo-6312017.jpeg"
+        },
+        {
+          "order": 2,
+          "link": "https://images.pexels.com/photos/6312018/pexels-photo-6312018.jpeg"
+        }
+      ],
+      "details": "<p>The <em>mid-century armchair</em> blends comfort with a retro touch. Its wooden frame and soft cushions offer a perfect balance of durability and style, making it an ideal reading or lounge chair.</p>",
+      "category": "chairs",
+      "rating": 4.4,
+      "availableSizes": [
+        "Small",
+        "Medium"
+      ],
+      "availableColors": [
+        "Green",
+        "Blue",
+        "Gray"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Modern Bedside Table",
+      "description": "Compact bedside table with a drawer and lower shelf.",
+      "thumbnail": "https://images.pexels.com/photos/5998136/pexels-photo-5998136.jpeg",
+      "price": 99.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://images.pexels.com/photos/5998136/pexels-photo-5998136.jpeg"
+        },
+        {
+          "order": 2,
+          "link": "https://images.pexels.com/photos/5998137/pexels-photo-5998137.jpeg"
+        }
+      ],
+      "details": "<p>The <strong>modern bedside table</strong> combines practicality with style, featuring a drawer for essentials and a lower shelf for decor or books. Its sleek design complements contemporary bedrooms.</p>",
+      "category": "tables",
+      "rating": 4.1,
+      "availableSizes": [
+        "One Size"
+      ],
+      "availableColors": [
+        "White",
+        "Black",
+        "Natural"
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Scandinavian Dining Chair",
+      "description": "Lightweight wooden chair with Scandinavian design.",
+      "thumbnail": "https://images.pexels.com/photos/6633448/pexels-photo-6633448.jpeg",
+      "price": 89.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://images.pexels.com/photos/6633448/pexels-photo-6633448.jpeg"
+        },
+        {
+          "order": 2,
+          "link": "https://images.pexels.com/photos/6633449/pexels-photo-6633449.jpeg"
+        }
+      ],
+      "details": "<p>The <em>Scandinavian dining chair</em> is lightweight yet sturdy, designed with clean lines and natural finishes. It pairs perfectly with wooden dining tables and brings a touch of Nordic charm to your dining room.</p>",
+      "category": "chairs",
+      "rating": 4.0,
+      "availableSizes": [
+        "Standard"
+      ],
+      "availableColors": [
+        "White",
+        "Wood",
+        "Black"
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Contemporary Sideboard",
+      "description": "Stylish sideboard with multiple storage compartments.",
+      "thumbnail": "https://images.pexels.com/photos/7195588/pexels-photo-7195588.jpeg",
+      "price": 349.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://images.pexels.com/photos/7195588/pexels-photo-7195588.jpeg"
+        },
+        {
+          "order": 2,
+          "link": "https://images.pexels.com/photos/7195590/pexels-photo-7195590.jpeg"
+        }
+      ],
+      "details": "<p>The <strong>contemporary sideboard</strong> is both stylish and functional, with ample storage space for tableware, electronics, or decor. Its sleek design makes it suitable for dining and living rooms alike.</p>",
+      "category": "storage",
+      "rating": 4.7,
+      "availableSizes": [
+        "Small",
+        "Large"
+      ],
+      "availableColors": [
+        "White",
+        "Walnut",
+        "Gray"
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Plush Ottoman",
+      "description": "Comfortable plush ottoman that doubles as extra seating.",
+      "thumbnail": "https://images.pexels.com/photos/33417228/pexels-photo-33417228.jpeg",
+      "price": 159.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://images.pexels.com/photos/33417228/pexels-photo-33417228.jpeg"
+        },
+        {
+          "order": 2,
+          "link": "https://images.pexels.com/photos/33417229/pexels-photo-33417229.jpeg"
+        }
+      ],
+      "details": "<p>The <em>plush ottoman</em> offers versatile use as a footrest, coffee table alternative, or extra seating. Upholstered with soft fabric, it adds comfort and style to any living area.</p>",
+      "category": "seating",
+      "rating": 4.3,
+      "availableSizes": [
+        "Small",
+        "Medium"
+      ],
+      "availableColors": [
+        "Beige",
+        "Gray",
+        "Blue"
+      ]
+    }
+  ]
+}

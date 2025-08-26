@@ -1,0 +1,24 @@
+{
+    "categories": [
+        {
+            "id": 1,
+            "name": "Living Room",
+            "thumbnail": "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg"
+        },
+        {
+            "id": 2,
+            "name": "Sofas",
+            "thumbnail": "https://images.pexels.com/photos/2883048/pexels-photo-2883048.jpeg"
+        },
+        {
+            "id": 3,
+            "name": "Minimalist Sofa",
+            "thumbnail": "https://images.pexels.com/photos/4352247/pexels-photo-4352247.jpeg"
+        },
+        {
+            "id": 4,
+            "name": "Accent Chairs",
+            "thumbnail": "https://images.pexels.com/photos/12325868/pexels-photo-12325868.jpeg"
+        }
+    ]
+}

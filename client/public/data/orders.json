@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "cost": 120.50,
+        "status": "pending"
+    },
+    {
+        "id": 2,
+        "cost": 75.00,
+        "status": "completed"
+    },
+    {
+        "id": 3,
+        "cost": 250.99,
+        "status": "shipped"
+    },
+    {
+        "id": 4,
+        "cost": 89.10,
+        "status": "cancelled"
+    },
+    {
+        "id": 5,
+        "cost": 145.75,
+        "status": "processing"
+    }
+]
