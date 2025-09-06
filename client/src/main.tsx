@@ -4,7 +4,8 @@ import App from './App.tsx'
 import "./styles/global.css";
 import { ChakraProvider, defineConfig, defaultConfig, createSystem } from '@chakra-ui/react';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import GlobalContextProvider from './contexts/CLientContext.tsx';
+import { Provider } from 'react-redux';
+import { store } from "@/store/store.ts";
 
 const queryClient = new QueryClient();
 
@@ -24,12 +25,13 @@ const theme = createSystem(defaultConfig, defineConfig({
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <GlobalContextProvider>
+    <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <ChakraProvider value={theme}>
           <App />
         </ChakraProvider >
       </QueryClientProvider>
-    </GlobalContextProvider>
+    </Provider>
+
   </StrictMode>,
 )

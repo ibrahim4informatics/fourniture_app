@@ -1,8 +1,9 @@
-import { GlobalContext } from '@/contexts/CLientContext'
+import { incrementQuantity, removeFromCart } from '@/store/slices/cartSlice';
 import type { ProductCardProps } from '@/types/product'
 import { Box, Button, FormatNumber, Image, Input, Table, Text } from '@chakra-ui/react'
-import React, { useContext } from 'react'
-import { LuTrash } from 'react-icons/lu'
+import React from 'react'
+import { LuTrash } from 'react-icons/lu';
+import { useDispatch } from 'react-redux';
 
 type Props = {
 
@@ -15,23 +16,7 @@ type CartProductType = {
 
 
 const CartProduct: React.FC<CartProductType> = ({ product, quantity }) => {
-
-    const { global, setGlobal } = useContext(GlobalContext);
-
-    const handleChangeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const index = global.cart.findIndex(({ product: cartProduct }) => product.id === cartProduct.id);
-        let newCartProduct = global.cart;
-        newCartProduct[index] = { ...newCartProduct[index], quantity: parseInt(e.target.value) }
-        setGlobal(prev => ({ ...prev, cart: newCartProduct }));
-        localStorage.setItem("cart",JSON.stringify(newCartProduct))
-
-    }
-
-    const handleDeleteFromCart = () => {
-        const newCartProducts = global.cart.filter(({ product: p }) => product.id !== p.id);
-        setGlobal({ cart: newCartProducts });
-        localStorage.setItem("cart", JSON.stringify(newCartProducts))
-    }
+    const dispatch = useDispatch();
     return (
         <Table.Row>
             <Table.Cell display={"flex"} alignItems={"center"} gap={2}>
@@ -42,13 +27,15 @@ const CartProduct: React.FC<CartProductType> = ({ product, quantity }) => {
                 <FormatNumber style='currency' currency='USD' value={product.price} />
             </Table.Cell>
             <Table.Cell>
-                <Input type="number" min={1} value={quantity} onChange={handleChangeQuantity} w={"60px"} rounded={"md"} bg={"white"} />
+                <Input type="number" min={1} value={quantity} onChange={(e) => {
+                    dispatch(incrementQuantity({ id: product.id, quantity: parseInt(e.target.value) }))
+                }} w={"60px"} rounded={"md"} bg={"white"} />
             </Table.Cell>
             <Table.Cell>
                 <Box display={"flex"} alignItems={"center"} justifyContent={"end"}>
 
                     <FormatNumber value={product.price * quantity} currency="USD" style="currency" />
-                    <Button variant={"ghost"} colorPalette={"red"} onClick={handleDeleteFromCart}>
+                    <Button mx={2} variant={"ghost"} colorPalette={"red"} onClick={()=>{dispatch(removeFromCart(product.id))}}>
                         <LuTrash />
                     </Button>
                 </Box>

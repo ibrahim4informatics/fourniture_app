@@ -1,5 +1,5 @@
 import { Box, Button, Heading } from '@chakra-ui/react'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Logo from './Logo'
 import { NavLink } from 'react-router-dom'
 import { TbUserExclamation } from 'react-icons/tb'
@@ -11,7 +11,8 @@ import { AnimatePresence, motion } from "motion/react"
 import MobileMenu from './MobileMenu'
 import { CiMenuFries } from 'react-icons/ci'
 import { AnimatedSearchBar } from './SearchBar'
-import { GlobalContext } from '@/contexts/CLientContext'
+import { useSelector } from 'react-redux'
+import type { RootState } from '@/store/store'
 
 
 const AnimatedButton = motion.create(Button);
@@ -22,9 +23,7 @@ type Props = {
 }
 
 const Navabar: React.FC<Props> = ({ transparency }) => {
-
-    const { global } = useContext(GlobalContext);
-
+    const cart = useSelector((state:RootState)=>state.cart);
     const [showNavbar, setShowNavbar] = useState<boolean>(false);
     const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
     const handleMenuButtonClick = () => setShowNavbar(true);
@@ -98,7 +97,7 @@ const Navabar: React.FC<Props> = ({ transparency }) => {
 
                         <NavLink to={"/cart"}>
                             <Box pos={"relative"} bg={"red"} as={"span"} color={(transparency && (scroll < 100)) ? "white" : "blackAlpha.700"} fontSize={{ base: 25, md: 30 }}>
-                                {global.cart.length > 0 && <Box pos={"absolute"} top={"-8px"} p={2} right={0} w={3} h={3} fontSize={10} display={"flex"} alignItems={"center"} justifyContent={"center"} color={"white"} fontWeight={"bold"} bg={"red.400"} rounded={"full"}>{global.cart.length}</Box>}
+                                {cart.items.length > 0 && <Box pos={"absolute"} top={"-8px"} p={2} right={0} w={3} h={3} fontSize={10} display={"flex"} alignItems={"center"} justifyContent={"center"} color={"white"} fontWeight={"bold"} bg={"red.400"} rounded={"full"}>{cart.items.length}</Box>}
                                 <BsCart3 />
                             </Box>
                         </NavLink>

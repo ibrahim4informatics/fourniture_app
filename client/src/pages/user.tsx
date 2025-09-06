@@ -1,15 +1,17 @@
-import  Orders from '@/components/ui/Orders';
+import Orders from '@/components/ui/Orders';
+import UserProfile from '@/components/UserProfile';
 import AppLayout from '@/layouts/AppLayout'
 import { getOrders } from '@/services/orders';
-import { Avatar, Badge, Box, Button, FormatNumber, Heading, Spinner, Table, TableScrollArea, Text } from '@chakra-ui/react'
+import { Avatar, Box, Button, Heading, Spinner, Text } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { IoExit } from 'react-icons/io5';
 
 const User = () => {
 
-    const {data:orders, isLoading, isError} = useQuery({
-        queryKey:["orders"],
-        queryFn:getOrders
+    const { data: orders, isLoading, isError } = useQuery({
+        queryKey: ["orders"],
+        queryFn: getOrders
     });
 
     const [tab, setTab] = useState("ORDERS");
@@ -27,9 +29,10 @@ const User = () => {
                         <Text mt={2} color={"GrayText"}>we hope you are doing well!</Text>
                     </Box>
 
-                    <Box ms={{ base: 0, md: "auto" }} display={"flex"} gap={2}>
+                    <Box ms={{ base: 0, md: "auto" }} display={"flex"} flexWrap={"wrap"} gap={2}>
                         <Button variant={tab === "ORDERS" ? "solid" : "outline"} onClick={() => { setTab("ORDERS") }}>Orders</Button>
                         <Button variant={tab === "PROFILE" ? "solid" : "outline"} onClick={() => { setTab("PROFILE") }}>Profile</Button>
+                        <Button variant={"solid"} colorPalette={"red"} onClick={() => { console.log("logout") }}><IoExit /></Button>
                     </Box>
                 </Box>
 
@@ -38,9 +41,7 @@ const User = () => {
                     tab === "ORDERS" ?
                         isLoading || isError ? (<Spinner color={"red"} size={"lg"} p={6} mx={"auto"} />) : <Orders orders={orders} /> :
                         (
-                            <>
-                                <Text>Personal INforamtion Here</Text>
-                            </>
+                            <UserProfile user={null} />
                         )
                 }
             </Box>

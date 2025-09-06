@@ -2,12 +2,12 @@ import HeaderSection from "@/components/ui/HeaderSection"
 import AppLayout from "@/layouts/AppLayout"
 import { Box } from "@chakra-ui/react"
 import cartHeaderPicture from "@/assets/images/cart-header.jpg"
-import { useContext } from "react"
-import { GlobalContext } from "@/contexts/CLientContext"
 import CartProducts from "@/components/ui/CartProduct"
 import CartCheckOutCard from "@/components/ui/CartCheckOutCard"
+import { useSelector } from "react-redux"
+import type { RootState } from "@/store/store"
 const Cart = () => {
-    const { global } = useContext(GlobalContext);
+    const cart = useSelector((state:RootState)=> state.cart)
     return (
         <AppLayout>
             <Box h={"100vh"} >
@@ -16,7 +16,7 @@ const Cart = () => {
 
                 <Box w={"full"} display={"flex"} p={4} mx={"auto"} maxW={1280} alignItems={"flex-start"} gap={2} flexWrap={{ base: "wrap-reverse", lg: "nowrap" }}>
 
-                    <CartProducts cartProducts={global.cart} />
+                    <CartProducts cartProducts={cart.items} />
 
                     <CartCheckOutCard />
                 </Box>

@@ -1,17 +1,19 @@
 import { GlobalContext } from '@/contexts/CLientContext'
+import type { RootState } from '@/store/store'
 import { Box, Button, FormatNumber, Text } from '@chakra-ui/react'
 import  { useContext, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 
 
 const CartCheckOutCard = () => {
-    const { global } = useContext(GlobalContext);
+   const cart = useSelector((state:RootState)=> state.cart)
 
     const [total, setTotal] = useState(0);
 
     useEffect(() => {
         let sum = 0;
-        global.cart.forEach(({ product, quantity }) => {
+        cart.items.forEach(({ product, quantity }) => {
             sum += (product.price * quantity)
         })
 

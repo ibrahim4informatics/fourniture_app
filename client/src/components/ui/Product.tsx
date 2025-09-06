@@ -1,48 +1,18 @@
-import { GlobalContext } from '@/contexts/CLientContext'
+import { addToCart, removeFromCart } from '@/store/slices/cartSlice'
 import type { ProductCardProps } from '@/types/product'
 import { Button, Card, CardFooter, FormatNumber, Image, Text } from '@chakra-ui/react'
-import React, { useContext } from 'react'
+import React from 'react'
 import { BsCartPlus, BsCartX } from 'react-icons/bs'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-
+import { type RootState } from '@/store/store'
 
 
 const Product: React.FC<ProductCardProps> = ({ title, description, price, thumbnail, id }) => {
 
-    const { global, setGlobal } = useContext(GlobalContext);
+    const cart = useSelector((state: RootState) => state.cart);
 
-    const isProductExistInCart = () => {
-        return global.cart.filter(({ product }) => product.id === id).length > 0;
-    }
-
-    const handleAddToCart = () => {
-        const cartProduct = {
-            product: { title, thumbnail, id, price, description },
-            quantity: 1
-        }
-
-
-        const cartProducts = global.cart;
-
-        if (!cartProducts.length) {
-            setGlobal(prev => ({ ...prev, cart: [cartProduct] }))
-            localStorage.setItem("cart", JSON.stringify([cartProduct]));
-        }
-        else {
-
-            if (!isProductExistInCart()) {
-                setGlobal(prev => ({ ...prev, cart: prev.cart.concat(cartProduct) }))
-                localStorage.setItem("cart", JSON.stringify(cartProducts.concat(cartProduct)))
-            }
-        }
-    }
-
-    const handleDeleteFromCart = () => {
-        const newCartProducts = global.cart.filter(({ product }) => product.id !== id);
-        setGlobal({ cart: newCartProducts });
-        localStorage.setItem("cart", JSON.stringify(newCartProducts))
-
-    }
+    const dispatch = useDispatch();
     return (
         <Card.Root pos={"relative"} w={238} bg={"white"} _hover={{ bg: "gray.100", scale: 1.04 }} transition={"all 300ms linear"} >
 
@@ -65,13 +35,16 @@ const Product: React.FC<ProductCardProps> = ({ title, description, price, thumbn
                     <FormatNumber value={price} style='currency' currency='USD' />
                 </Text>
 
-                {
-                    isProductExistInCart() ? (<Button pos={"absolute"} onClick={handleDeleteFromCart} rounded={"full"} w={12} h={12} top={2} right={4} colorPalette={"red"}>
+
+                {cart.items.filter(item => item.product.id === id).length < 1 ? <Button pos={"absolute"} onClick={() => { dispatch(addToCart({ id, description, price, thumbnail, title })) }} rounded={"full"} w={12} h={12} top={2} right={4} colorPalette={"green"}>
+                    <BsCartPlus />
+                </Button> :
+
+                    <Button pos={"absolute"} onClick={() => { dispatch(removeFromCart(id)) }} rounded={"full"} w={12} h={12} top={2} right={4} colorPalette={"red"}>
                         <BsCartX />
-                    </Button>) : (<Button pos={"absolute"} onClick={handleAddToCart} rounded={"full"} w={12} h={12} top={2} right={4} colorPalette={"green"}>
-                        <BsCartPlus />
-                    </Button>)
+                    </Button>
                 }
+
             </CardFooter>
         </Card.Root>
     )
