@@ -23,7 +23,10 @@ type Props = {
 }
 
 const Navabar: React.FC<Props> = ({ transparency }) => {
-    const cart = useSelector((state:RootState)=>state.cart);
+    const cartCount = useSelector((state: RootState) => state.cart.items.length);
+    const wishlistCount = useSelector((state: RootState) => state.wishlist.products.length)
+
+
     const [showNavbar, setShowNavbar] = useState<boolean>(false);
     const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
     const handleMenuButtonClick = () => setShowNavbar(true);
@@ -88,8 +91,11 @@ const Navabar: React.FC<Props> = ({ transparency }) => {
 
 
                         <NavLink to={"/wishlist"}>
-                            <Box as={"span"} color={(transparency && (scroll < 100)) ? "white" : "blackAlpha.700"} fontSize={{ base: 25, md: 30 }}>
+                            <Box pos={"relative"} as={"span"} color={(transparency && (scroll < 100)) ? "white" : "blackAlpha.700"} fontSize={{ base: 25, md: 30 }}>
                                 <IoIosHeartEmpty />
+                                {wishlistCount > 0 && <Box pos={"absolute"} top={"-8px"} p={2} right={0} w={3} h={3} fontSize={10} display={"flex"} alignItems={"center"} justifyContent={"center"} color={"white"} fontWeight={"bold"} bg={"red.600"} rounded={"full"}>{wishlistCount}</Box>
+                                }
+
                             </Box>
                         </NavLink>
 
@@ -97,7 +103,7 @@ const Navabar: React.FC<Props> = ({ transparency }) => {
 
                         <NavLink to={"/cart"}>
                             <Box pos={"relative"} bg={"red"} as={"span"} color={(transparency && (scroll < 100)) ? "white" : "blackAlpha.700"} fontSize={{ base: 25, md: 30 }}>
-                                {cart.items.length > 0 && <Box pos={"absolute"} top={"-8px"} p={2} right={0} w={3} h={3} fontSize={10} display={"flex"} alignItems={"center"} justifyContent={"center"} color={"white"} fontWeight={"bold"} bg={"red.400"} rounded={"full"}>{cart.items.length}</Box>}
+                                {cartCount > 0 && <Box pos={"absolute"} top={"-8px"} p={2} right={0} w={3} h={3} fontSize={10} display={"flex"} alignItems={"center"} justifyContent={"center"} color={"white"} fontWeight={"bold"} bg={"red.600"} rounded={"full"}>{cartCount}</Box>}
                                 <BsCart3 />
                             </Box>
                         </NavLink>
