@@ -24,7 +24,7 @@ type Props = {
     fields?: z.infer<typeof schema>
 }
 
-const CheckoutForm: React.FC<Props> = ({ fields }) => {
+const CheckoutForm: React.FC<Props> = ({}) => {
 
     const {  register, formState: { errors, isSubmitting }, watch , handleSubmit} = useForm({
         resolver: zodResolver(schema)

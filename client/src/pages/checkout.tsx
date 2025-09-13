@@ -4,10 +4,9 @@ import AppLayout from "@/layouts/AppLayout"
 import type { RootState } from "@/store/store";
 import { Box } from "@chakra-ui/react"
 import { useSelector } from "react-redux"
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const Checkout = () => {
-    const navigate = useNavigate();
     const cart = useSelector((state:RootState)=> state.cart)
 
 
