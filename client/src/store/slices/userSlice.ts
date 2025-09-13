@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 
 interface UserState {
     id?: string,
@@ -10,7 +10,8 @@ interface UserState {
     createdAt?: string,
     updatedAt?: string,
     avatarUrl?: string,
-    token?: string,
+    accessToken?: string,
+    refreshToken?: string,
     isSignedIn: boolean
 }
 
@@ -25,9 +26,32 @@ const userSlice = createSlice({
     initialState,
     reducers: {
 
+        setUser: (state, { payload }: PayloadAction<UserState>) => {
+            state = payload;
+        },
+
+        setToken: (state, { payload }: PayloadAction<{ type: "refresh" | "access", value: string }>) => {
+            if (payload.type === "access") {
+                state = { ...state, accessToken: payload.value }
+            }
+            else {
+                state = { ...state, refreshToken: payload.value }
+            }
+        },
+
+        setSignedIn: (state) => {
+            state = { ...state, isSignedIn: true }
+        },
+
+        setSignedOut: (state) => {
+            state = { ...state, isSignedIn: false }
+        }
+
+
+
     }
 })
 
 
-export const {} = userSlice.actions;
+export const { } = userSlice.actions;
 export default userSlice.reducer;

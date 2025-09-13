@@ -10,7 +10,7 @@ const initialState: CartSate = {
 const checkExistingCartProduct = (id: number): boolean => {
     if (typeof window !== undefined) {
 
-        return JSON.parse(localStorage.getItem("cart")!).filter(   (item: any) => item.product.id === id).length > 0;
+        return JSON.parse(localStorage.getItem("cart") || "[]").filter(   (item: any) => item.product.id === id).length > 0;
     }
 
     else {
@@ -19,14 +19,14 @@ const checkExistingCartProduct = (id: number): boolean => {
 
 }
 const saveProduct = (data: any) => {
-    let existing = JSON.parse(localStorage.getItem("cart")!);
+    let existing = JSON.parse(localStorage.getItem("cart") || "[]");
     existing = existing.concat(data);
     localStorage.setItem("cart", JSON.stringify(existing));
 }
 
 
 const removeProduct = (id: number) => {
-    const existing = JSON.parse(localStorage.getItem("cart")!).filter((cartItem: any) => cartItem.product.id !== id);
+    const existing = JSON.parse(localStorage.getItem("cart") || "[]").filter((cartItem: any) => cartItem.product.id !== id);
     localStorage.setItem("cart", JSON.stringify(existing));
 }
 

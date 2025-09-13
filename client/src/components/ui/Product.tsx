@@ -17,6 +17,7 @@ const Product: React.FC<ProductCardProps> = ({ title, description, price, thumbn
     const dispatch = useDispatch();
 
     const handleAddToWishlist = () => {
+        console.log("add")
         dispatch(addToWishlist({ id, description, price, thumbnail, title }));
     }
 

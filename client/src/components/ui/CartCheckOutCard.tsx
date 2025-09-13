@@ -1,19 +1,23 @@
-import { GlobalContext } from '@/contexts/CLientContext'
-import type { RootState } from '@/store/store'
 import { Box, Button, FormatNumber, Text } from '@chakra-ui/react'
-import  { useContext, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { type CartProductType } from './CartProduct'
+import { Link } from 'react-router-dom'
 
+type Props = {
+    cart: CartProductType[],
+    showBtn?: boolean,
+    width?: string,
+    height?:number
+}
 
+const CartCheckOutCard: React.FC<Props> = ({ cart, width, showBtn = true, height }) => {
 
-const CartCheckOutCard = () => {
-   const cart = useSelector((state:RootState)=> state.cart)
 
     const [total, setTotal] = useState(0);
 
     useEffect(() => {
         let sum = 0;
-        cart.items.forEach(({ product, quantity }) => {
+        cart.forEach(({ product, quantity }) => {
             sum += (product.price * quantity)
         })
 
@@ -21,7 +25,7 @@ const CartCheckOutCard = () => {
     }, [localStorage.getItem("cart")])
 
     return (
-        <Box display={"flex"} flexDirection={"column"} alignItems={"center"} justifyContent={"space-between"} w={{ base: "full", lg: 400 }} p={4} rounded={"md"} bg={"white"} shadow={"sm"} gap={6}>
+        <Box display={"flex"} h={height || "auto"} flexDirection={"column"} alignItems={"center"} justifyContent={"space-between"} w={{ base: "full", lg: width || 400 }} p={4} rounded={"md"} bg={"white"} shadow={"sm"} gap={6}>
             <Text fontSize={24} fontWeight={"bold"}>Totals</Text>
 
 
@@ -29,9 +33,9 @@ const CartCheckOutCard = () => {
 
 
 
-            <Button my={6} colorPalette={"green"} size={"xl"} >
-                Order Now
-            </Button>
+            {showBtn && <Button asChild my={6} colorPalette={"green"} size={"xl"} >
+                <Link to={"/checkout"}>Order Now</Link>
+            </Button>}
 
         </Box>
     )

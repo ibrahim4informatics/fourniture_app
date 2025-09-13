@@ -4,13 +4,14 @@ import { Box, Button, FormatNumber, Image, Input, Table, Text } from '@chakra-ui
 import React from 'react'
 import { LuTrash } from 'react-icons/lu';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 type Props = {
 
     cartProducts: CartProductType[]
 }
 
-type CartProductType = {
+export type CartProductType = {
     product: ProductCardProps, quantity: number
 }
 
@@ -21,7 +22,7 @@ const CartProduct: React.FC<CartProductType> = ({ product, quantity }) => {
         <Table.Row>
             <Table.Cell display={"flex"} alignItems={"center"} gap={2}>
                 <Image src={product.thumbnail} w={20} h={20} rounded={"md"} />
-                <Text color={"GrayText"}>{product.title}</Text>
+                <Text color={"red.400"} textDecoration={"underline"} asChild><Link to={`/shop/${product.id}`}>{product.title}</Link></Text>
             </Table.Cell>
             <Table.Cell>
                 <FormatNumber style='currency' currency='USD' value={product.price} />
