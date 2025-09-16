@@ -7,11 +7,14 @@ import SingleProduct from "./pages/single-product"
 import User from "./pages/user"
 import Wishlist from "./pages/wishlist"
 import Checkout from "./pages/checkout"
+import Login from "./pages/login"
 
 const routes = createBrowserRouter([
   { path: "/", element: <Home />, errorElement: <h1>Error</h1> },
   { path: "/shop", element: <Shop />, errorElement: <h1>Error</h1> },
   { path: "/cart", element: <Cart />, errorElement: <h1>Error</h1> },
+  { path: "/login", element: <Login />, errorElement: <h1>Error</h1> },
+  { path: "/register", element: <Cart />, errorElement: <h1>Error</h1> },
   { path: "/checkout", element: <Checkout />, errorElement: <h1>Error</h1> },
   { path: "/wishlist", element: <Wishlist />, errorElement: <h1>Error</h1> },
   { path: "/user", element: <User />, errorElement: <h1>Error</h1> },

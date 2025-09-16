@@ -4,11 +4,10 @@ import { Box, Button, Text } from "@chakra-ui/react"
 import cartHeaderPicture from "@/assets/images/cart-header.jpg"
 import CartProducts from "@/components/ui/CartProduct"
 import CartCheckOutCard from "@/components/ui/CartCheckOutCard"
-import { useSelector } from "react-redux"
-import type { RootState } from "@/store/store"
 import { Link } from "react-router-dom"
+import { useAppSelector } from "@/hooks/stateHooks"
 const Cart = () => {
-    const cart = useSelector((state: RootState) => state.cart)
+    const cart = useAppSelector(state=> state.cart);
     return (
         <AppLayout>
             <Box h={"100vh"} >

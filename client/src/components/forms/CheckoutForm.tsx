@@ -155,7 +155,7 @@ const CheckoutForm: React.FC<Props> = ({}) => {
 
             <Field.Root mb={4} w={"full"} invalid={errors.zip_code?.message ? true : false} required>
                 <Field.Label>
-                    zip_code
+                    Zip
                     <Field.RequiredIndicator />
                 </Field.Label>
 
