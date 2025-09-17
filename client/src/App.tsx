@@ -8,6 +8,7 @@ import User from "./pages/user"
 import Wishlist from "./pages/wishlist"
 import Checkout from "./pages/checkout"
 import Login from "./pages/login"
+import Overview from "./pages/dashboard/overview"
 
 const routes = createBrowserRouter([
   { path: "/", element: <Home />, errorElement: <h1>Error</h1> },
@@ -17,6 +18,7 @@ const routes = createBrowserRouter([
   { path: "/register", element: <Cart />, errorElement: <h1>Error</h1> },
   { path: "/checkout", element: <Checkout />, errorElement: <h1>Error</h1> },
   { path: "/wishlist", element: <Wishlist />, errorElement: <h1>Error</h1> },
+  { path: "/admin", element: <Overview />, errorElement: <h1>Error</h1> },
   { path: "/user", element: <User />, errorElement: <h1>Error</h1> },
   { path: "/shop/:id", element: <SingleProduct />, errorElement: <h1>Error</h1> },
 ])
