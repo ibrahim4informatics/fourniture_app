@@ -22,10 +22,10 @@ const ProfitLossWidget:React.FC<Props> = ({data}) => {
         ],
     });
     return (
-        <GridItem p={5} bg={"white"} rounded={"md"} shadow={"md"} colSpan={3} h={300} cursor={"pointer"} _hover={{ scale: 1.01 }} transition={"all"}>
+        <GridItem p={5} bg={"white"} overflowX={"auto"} rounded={"md"} shadow={"md"} colSpan={{base:1, md:2,lg:3}} h={350} cursor={"pointer"} _hover={{ scale: 1.01 }} transition={"all"}>
 
             <Text fontSize={22} my={2}>P/L Ratio</Text>
-            <Chart.Root cursor={'pointer'} maxH={225} chart={chart}>
+            <Chart.Root w={"full"}  minW={600} cursor={'pointer'} maxH={225} chart={chart}>
 
                 <BarChart data={chart.data}>
                     <CartesianGrid stroke={chart.color("border.muted")} vertical={false} />

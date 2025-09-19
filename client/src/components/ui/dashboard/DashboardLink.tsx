@@ -11,14 +11,16 @@ type Props = {
 }
 
 const DashboardLink: React.FC<Props> = ({ href, text, icon, variant = "link" }) => {
-    return (
-        <Box asChild w={"full"} color={"gray.700"} bg={"gray.200"} rounded={"md"} px={3} py={4} display={"flex"} alignItems={"center"} gap={2}>
 
+
+    return (
+        <Box asChild w={"full"} color={"gray.700"} bg={location.pathname === href ?"red.200":"gray.200"} rounded={"md"} px={3} py={4} display={"flex"} alignItems={"center"} justifyContent={{base:"center", lg:"start"}} gap={2}>
+          
             {variant === "navlink" ?
                 <NavLink to={href}>
                     {icon && icon}
 
-                    <Text>{text}</Text>
+                    <Text display={{base:'none', lg:"block"}}>{text}</Text>
                 </NavLink>
 
                 : <Link to={href}>

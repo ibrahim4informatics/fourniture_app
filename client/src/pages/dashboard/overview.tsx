@@ -75,7 +75,7 @@ const Overview = () => {
     return (
         <DashboardLayout>
             <OverviewTopSection />
-            <Grid w={"full"} gap={6} templateColumns={"repeat(3,1fr)"} maxW={1280} mx={"auto"} py={6}>
+            <Grid w={"full"} gap={6} templateColumns={{base:"1fr",md:"repeat(2,1fr)",lg:"repeat(3,1fr)"}} maxW={1280} mx={"auto"} py={6}>
                 <TodaySalesWidget todaySalesProfit={900} />
                 <TodayRevenueWidget todayRevenueValue={1750} />
                 <TotalOrdersWidget ordersCount={650} />

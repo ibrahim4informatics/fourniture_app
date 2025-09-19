@@ -10,13 +10,13 @@ import {BiUserCircle} from "react-icons/bi"
 
 const DashboardSidebar = () => {
     return (
-        <Box h={"100vh"} w={325} bg={"white"} shadow={"md"} display={"flex"} flexDir={"column"} py={6} px={2}>
+        <Box h={"100vh"} w={{base:70,lg:370}} overflowX={"auto"} bg={"white"} shadow={"md"} display={"flex"} flexDir={"column"} py={6} px={2}>
 
             {/* Top Section */}
             <Box w={"full"} display={"flex"} alignItems={"center"} gap={1}>
 
                 <Logo width='50' height='50' />
-                <Heading size={"2xl"}>Fournito</Heading>
+                <Heading display={{base:"none",lg:"block"}} size={"2xl"}>Fournito</Heading>
             </Box>
 
 
@@ -28,7 +28,7 @@ const DashboardSidebar = () => {
                 <DashboardLink text='Products' href='/admin/products' icon={<FaBoxOpen />} variant='navlink' />
                 <DashboardLink text='Categories' href='/admin/categories' icon={<MdCategory />} variant='navlink' />
                 <Box pos={"relative"}>
-                    <Box pos={"absolute"} right={2} top={"50%"} transform={"translateY(-50%)"} fontSize={12} color={"white"} w={6} h={6} rounded={"full"}  display={"flex"} alignItems={"center"} justifyContent={"center"} bg={"red.600"} border={"solid 2px "} borderColor={"red.600"} >1</Box>
+                    <Box pos={"absolute"} right={2} top={"50%"} transform={"translateY(-50%)"} fontSize={12} color={"white"} w={6} h={6} rounded={"full"}  display={{base:"none", lg:"flex"}} alignItems={"center"} justifyContent={"center"} bg={"red.600"} border={"solid 2px "} borderColor={"red.600"} >1</Box>
                     <DashboardLink text='Orders' href='/admin/orders' icon={<MdListAlt />} variant='navlink' />
                 </Box>
             </Box>
@@ -39,7 +39,7 @@ const DashboardSidebar = () => {
             <Button mt={"auto"} display={"flex"} asChild mb={3} colorPalette={"black"} variant={"surface"}>
                 <Link to={"/shop"}>
                     <IoMdEye />
-                    <Text>View Store</Text>
+                    <Text display={{base:"none", lg:"block"}}>View Store</Text>
                 </Link>
             </Button>
             <Button mt={"auto"} colorPalette={"red"} variant={"surface"}>
