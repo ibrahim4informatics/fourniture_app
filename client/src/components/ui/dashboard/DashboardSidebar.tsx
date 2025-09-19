@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { IoMdEye } from 'react-icons/io'
 import { MdCategory, MdDashboard, MdListAlt, MdLogout } from 'react-icons/md'
 import { FaBoxOpen } from 'react-icons/fa'
+import {BiUserCircle} from "react-icons/bi"
 
 const DashboardSidebar = () => {
     return (
@@ -23,6 +24,7 @@ const DashboardSidebar = () => {
 
             <Box w={"full"} flex={1} display={"flex"} flexDir={"column"} mt={8} gap={6} py={4}>
                 <DashboardLink text='Overview' href='/admin' icon={<MdDashboard />} variant='navlink' />
+                <DashboardLink text='Customers' href='/admin/customers' icon={<BiUserCircle />} variant='navlink' />
                 <DashboardLink text='Products' href='/admin/products' icon={<FaBoxOpen />} variant='navlink' />
                 <DashboardLink text='Categories' href='/admin/categories' icon={<MdCategory />} variant='navlink' />
                 <Box pos={"relative"}>

@@ -1,7 +1,7 @@
 
 import OverviewTopSection from '@/components/ui/dashboard/OverviewTopSection'
 import DashboardLayout from '@/layouts/DashboardLayout'
-import { Badge, Box, Button, FormatNumber, Grid, GridItem, Image, Menu, Portal, Table, Text } from '@chakra-ui/react'
+import { Badge, Box, Button, FormatNumber, Grid, GridItem, Heading, Image, Menu, Portal, Table, Text } from '@chakra-ui/react'
 import TotalOrdersWidget from '@/components/ui/dashboard/TotalOrdersWidget'
 import TodayRevenueWidget from '@/components/ui/dashboard/TodayRevenueWidget'
 import TodaySalesWidget from '@/components/ui/dashboard/TodaySalesWidget'
@@ -12,22 +12,63 @@ import ProfitLossWidget from '@/components/ui/dashboard/ProfitLossWidget'
 import { Link } from 'react-router-dom'
 import { MdMore } from 'react-icons/md'
 import { IoIosMore } from 'react-icons/io'
+import Modale from '@/components/ui/Modale'
+import LatestOrders, { type OrderProps } from '@/components/ui/dashboard/LatestOrders'
 const Overview = () => {
 
     const data = [
-        {profit:1200,loss:600, month:"January"},
-        {profit:1700,loss:120, month:"February"},
-        {profit:1400,loss:840, month:"March"},
-        {profit:1000,loss:240, month:"April"},
-        {profit:1600,loss:560, month:"May"},
-        {profit:1740,loss:210, month:"June"},
-        {profit:1250,loss:150, month:"Jully"},
-        {profit:1240,loss:210, month:"August"},
-        {profit:1210,loss:100, month:"September"},
-        {profit:1010,loss:200, month:"October"},
-        {profit:1250,loss:800, month:"November"},
-        {profit:1240,loss:400, month:"December"},
+        { profit: 1200, loss: 600, month: "January" },
+        { profit: 1700, loss: 120, month: "February" },
+        { profit: 1400, loss: 840, month: "March" },
+        { profit: 1000, loss: 240, month: "April" },
+        { profit: 1600, loss: 560, month: "May" },
+        { profit: 1740, loss: 210, month: "June" },
+        { profit: 1250, loss: 150, month: "Jully" },
+        { profit: 1240, loss: 210, month: "August" },
+        { profit: 1210, loss: 100, month: "September" },
+        { profit: 1010, loss: 200, month: "October" },
+        { profit: 1250, loss: 800, month: "November" },
+        { profit: 1240, loss: 400, month: "December" },
     ]
+
+
+    const LatestOrdersList:OrderProps[] = [
+        {
+            id: 1,
+            ammount: 120.5,
+            customer: { id: 101, first_name: "John", last_name: "Doe" },
+            date: "2025-09-15T10:30:00Z",
+            status: "Delivered",
+        },
+        {
+            id: 2,
+            ammount: 89.99,
+            customer: { id: 102, first_name: "Sarah", last_name: "Connor" },
+            date: "2025-09-16T14:45:00Z",
+            status: "Pending",
+        },
+        {
+            id: 3,
+            ammount: 49.0,
+            customer: { id: 103, first_name: "Michael", last_name: "Smith" },
+            date: "2025-09-17T09:15:00Z",
+            status: "Processing",
+        },
+        {
+            id: 4,
+            ammount: 220.75,
+            customer: { id: 104, first_name: "Emily", last_name: "Johnson" },
+            date: "2025-09-17T19:20:00Z",
+            status: "Canceled",
+        },
+        {
+            id: 5,
+            ammount: 150.25,
+            customer: { id: 105, first_name: "David", last_name: "Brown" },
+            date: "2025-09-18T08:00:00Z",
+            status: "Refunded",
+        },
+    ];
 
 
 
@@ -39,61 +80,12 @@ const Overview = () => {
                 <TodayRevenueWidget todayRevenueValue={1750} />
                 <TotalOrdersWidget ordersCount={650} />
 
-                <ProfitLossWidget 
+                <ProfitLossWidget
                     data={data} />
             </Grid>
 
-            <Box w={"full"} maxW={1280} mx={"auto"} py={6}>
+            <LatestOrders orders={LatestOrdersList} />
 
-                <Text fontSize={22}>Latest Orders</Text>
-
-                <Table.Root>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.ColumnHeader>ORDER-ID</Table.ColumnHeader>
-                            <Table.ColumnHeader>CUSTOMER-NAME</Table.ColumnHeader>
-                            <Table.ColumnHeader>DATE</Table.ColumnHeader>
-                            <Table.ColumnHeader>STATUS</Table.ColumnHeader>
-                            <Table.ColumnHeader>AMOUNT</Table.ColumnHeader>
-                            <Table.ColumnHeader>ACTIONS</Table.ColumnHeader>
-                        </Table.Row>
-                    </Table.Header>
-
-                    <Table.Body>
-                        <Table.Row>
-                            <Table.Cell>#178</Table.Cell>
-                            <Table.Cell><Text asChild color={"red.400"} textDecor={"underline"}><Link to={"/"}>Ibrahim</Link></Text></Table.Cell>
-                            <Table.Cell>{new Date("10-22-2024").toLocaleDateString("US", {year:"numeric", month:"short", day:"numeric"})}</Table.Cell>
-                            <Table.Cell> <Box display={"flex"} alignItems={"center"} gap={1}><Box w={"8px"} h={"8px"} rounded={"full"} bgColor={"green.400"}></Box><Text>Delivered</Text></Box> </Table.Cell>
-                            <Table.Cell><Text><FormatNumber value={600} style='currency' currency='USD' /></Text></Table.Cell>
-                            <Table.Cell>
-                                <Menu.Root>
-                                    <Menu.Trigger asChild>
-                                        <Button variant={"subtle"}><IoIosMore/></Button>
-                                    </Menu.Trigger>
-                                        <Portal>
-                                            <Menu.Positioner>
-                                                <Menu.Content>
-                                                    <Menu.Item asChild value='show-order'>
-                                                        <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{color:"red.600"}} outline={"none"} asChild><Link to={""}>Show Order</Link></Text>
-                                                    </Menu.Item>
-                                                    <Menu.Item asChild value='edit-order'>
-                                                        <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{color:"red.600"}} outline={"none"} asChild><Link to={""}>Process Order</Link></Text>
-                                                    </Menu.Item>
-
-                                                    <Menu.Item asChild value='delete-order'>
-                                                        <Text color={"red.700"} cursor={"pointer"} textDecor={"underline"} _hover={{color:"red.600"}} outline={"none"} asChild><Link to={""}>Delete Order</Link></Text>
-                                                    </Menu.Item>
-                                                </Menu.Content>
-                                            </Menu.Positioner>
-                                        </Portal>
-                                </Menu.Root>
-                            </Table.Cell>
-                        </Table.Row>
-                    </Table.Body>
-                </Table.Root>
-
-            </Box>
         </DashboardLayout>
     )
 }

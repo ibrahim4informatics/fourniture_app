@@ -46,7 +46,7 @@ const ProfitLossWidget:React.FC<Props> = ({data}) => {
 
                     {chart.series.map(serie => (
                         <Bar
-                            isAnimationActive={false} key={serie.name} dataKey={chart.key(serie.name)} fill={chart.color(serie.color)}
+                            isAnimationActive={true} key={serie.name} dataKey={chart.key(serie.name)} fill={chart.color(serie.color)}
                             stroke={chart.color(serie.color)} stackId={serie.stackId} radius={5}
                         >
                         </Bar>
