@@ -1,4 +1,4 @@
-import DashboardSidebar from '@/components/ui/DashboardSidebar'
+import DashboardSidebar from '@/components/ui/dashboard/DashboardSidebar'
 import { Box } from '@chakra-ui/react'
 import React from 'react'
 

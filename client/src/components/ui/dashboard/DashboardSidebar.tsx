@@ -1,6 +1,6 @@
 import { Box, Button, Heading, Text } from '@chakra-ui/react'
 import React from 'react'
-import Logo from './Logo'
+import Logo from '../Logo'
 import DashboardLink from './DashboardLink'
 import { Link } from 'react-router-dom'
 import { IoMdEye } from 'react-icons/io'
