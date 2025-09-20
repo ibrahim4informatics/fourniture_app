@@ -1,7 +1,8 @@
+import { FramerModal } from '@/components/ui/Modale'
 import DashboardLayout from '@/layouts/DashboardLayout'
-import { Box, Button, ButtonGroup, IconButton, Input, InputGroup, Menu, Pagination, Portal, Table, Text } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Heading, IconButton, Input, InputGroup, Menu, Pagination, Portal, Table, Text } from '@chakra-ui/react'
 import type { ChangeEvent, EventHandler, InputEventHandler } from 'react'
-import { IoIosAdd, IoIosMore, IoIosSearch, IoIosSettings } from 'react-icons/io'
+import { IoIosAdd, IoIosArrowBack, IoIosMore, IoIosSearch, IoIosSettings } from 'react-icons/io'
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu'
 import { Link, useSearchParams } from 'react-router-dom'
 
@@ -27,11 +28,11 @@ const CustomerTopSection = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleChange = (e:ChangeEvent<HTMLInputElement>)=>{
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 
     const newSearchParams = new URLSearchParams(searchParams);
     const value = e.target.value;
-    if(value.trim().length > 0){
+    if (value.trim().length > 0) {
       newSearchParams.set("search", value);
     }
     else {
@@ -42,29 +43,22 @@ const CustomerTopSection = () => {
     // TODO: invalidate query to force refetch
   }
   return (
-    <Box gap={6} w={"full"} py={4} display={"flex"} alignItems={"center"}>
+    <Box gap={6} w={"full"} py={4} display={"flex"} alignItems={"center"} flexWrap={"wrap"}>
 
       <Text fontSize={27}>Customers</Text>
       <InputGroup flex={1} px={6} py={8} startElement={<IoIosSearch size={25} color='#a1a1aa' />} >
-        <Input onChange={handleChange} colorPalette={"red"} variant={"subtle"} placeholder='Search By Name.'  value={searchParams.get("search") || ""} size={"lg"} rounded={"full"} />
+        <Input onChange={handleChange} colorPalette={"red"} variant={"subtle"} placeholder='Search By Name.' value={searchParams.get("search") || ""} size={"lg"} rounded={"full"} />
       </InputGroup>
 
 
-      <Box display={"flex"} alignItems={"center"} gap={4}>
+
+      <Button size={"lg"} onClick={() => { console.log("show filters customer") }} variant={"subtle"}>
+        <IoIosSettings />
+        Filters
+      </Button>
 
 
-        <Button size={"lg"} onClick={() => { console.log("show filters customer") }} variant={"subtle"}>
-          <IoIosSettings />
-          Filters
-        </Button>
 
-        <Button size={"lg"} onClick={() => { console.log("show create customer form") }} colorPalette={"red"}>
-          <IoIosAdd />
-          Create Customer
-        </Button>
-
-
-      </Box>
 
 
 
@@ -77,8 +71,8 @@ const CustomerTopSection = () => {
 const CustomersTable: React.FC<CustomersTableProps> = ({ customers }) => {
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const getPage = ()=> Number.parseInt(searchParams.get("page") || "1");
-  const setPage = (page:number)=>{
+  const getPage = () => Number.parseInt(searchParams.get("page") || "1");
+  const setPage = (page: number) => {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("page", page.toString());
     setSearchParams(newSearchParams);
@@ -100,7 +94,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({ customers }) => {
           </Table.Header>
 
           <Table.Body>
-            {customers.slice((getPage() - 1) * 10 , getPage() * 10 ).map(customer => (
+            {customers.slice((getPage() - 1) * 10, getPage() * 10).map(customer => (
               <Table.Row key={customer.id}>
                 <Table.Cell>{customer.id}</Table.Cell>
                 <Table.Cell>{customer.first_name}</Table.Cell>
@@ -141,21 +135,21 @@ const CustomersTable: React.FC<CustomersTableProps> = ({ customers }) => {
       <Pagination.Root mt={2} colorPalette={"red"} count={customers.length} pageSize={10} page={getPage()}>
         <ButtonGroup variant="ghost" size="sm" wrap="wrap">
           <Pagination.PrevTrigger asChild>
-            <IconButton onClick={()=> {setPage(getPage() - 1)} }>
+            <IconButton onClick={() => { setPage(getPage() - 1) }}>
               <LuChevronLeft />
             </IconButton>
           </Pagination.PrevTrigger>
 
           <Pagination.Items
             render={(page) => (
-              <IconButton variant={{ base: "ghost", _selected: "outline" }} onClick={()=>{setPage(page.value)}}>
+              <IconButton variant={{ base: "ghost", _selected: "outline" }} onClick={() => { setPage(page.value) }}>
                 {page.value}
               </IconButton>
             )}
           />
 
           <Pagination.NextTrigger asChild>
-            <IconButton onClick={()=> {setPage(getPage() + 1)} }>
+            <IconButton onClick={() => { setPage(getPage() + 1) }}>
               <LuChevronRight />
             </IconButton>
           </Pagination.NextTrigger>
@@ -193,10 +187,10 @@ const Customers = () => {
   return (
     <DashboardLayout>
 
-      <CustomerTopSection />
-
-
-      <CustomersTable customers={customers} />
+      <Box w={"full"} maxW={1280} mx={"auto"}>
+        <CustomerTopSection />
+        <CustomersTable customers={customers} />
+      </Box>
 
 
     </DashboardLayout>
