@@ -1,12 +1,20 @@
 import { Box, Button, Input, InputGroup, Text } from "@chakra-ui/react";
-import type { ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import { IoIosSearch, IoIosSettings } from "react-icons/io";
 import { useSearchParams } from "react-router-dom";
 import ShowCustomer from "./ShowCustomer";
+import { AnimatePresence } from "motion/react";
+import CustomersFilters from "../CustomersFilters";
+import { useDispatch } from "react-redux";
+import { customersFilterToggler } from "@/store/slices/dashboardSlice";
+import { useAppSelector } from "@/hooks/stateHooks";
 
 const CustomerTopSection = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
+
+    const dispatch = useDispatch();
+    const showCustomersFilters = useAppSelector(state=>state.dahsboard.showCustomerFilters);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 
@@ -31,14 +39,16 @@ const CustomerTopSection = () => {
                     <Input onChange={handleChange} colorPalette={"red"} variant={"subtle"} placeholder='Search By Name.' value={searchParams.get("search") || ""} size={"lg"} rounded={"full"} />
                 </InputGroup>
 
-                <Button size={"lg"} onClick={() => { console.log("show filters customer") }} variant={"subtle"}>
+                <Button size={"lg"} onClick={() => { dispatch(customersFilterToggler("show")) } } variant={"subtle"}>
                     <IoIosSettings />
                     Filters
                 </Button>
 
             </Box>
 
-            <ShowCustomer />
+            <AnimatePresence>
+                {showCustomersFilters && <CustomersFilters initial={{ right: "-100%", opacity:0 }} animate={{ right: 0, opacity:1 }} exit={{ right: "-100%", opacity:0 }}  />}
+            </AnimatePresence>
         </>
     )
 }

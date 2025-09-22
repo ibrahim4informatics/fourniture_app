@@ -28,7 +28,7 @@ const DashboardSidebar = () => {
                 <DashboardLink text='Products' href='/admin/products' icon={<FaBoxOpen />} variant='navlink' />
                 <DashboardLink text='Categories' href='/admin/categories' icon={<MdCategory />} variant='navlink' />
                 <Box pos={"relative"}>
-                    <Box pos={"absolute"} right={2} top={"50%"} transform={"translateY(-50%)"} fontSize={12} color={"white"} w={6} h={6} rounded={"full"}  display={{base:"none", lg:"flex"}} alignItems={"center"} justifyContent={"center"} bg={"red.600"} border={"solid 2px "} borderColor={"red.600"} >1</Box>
+                    <Box pos={"absolute"} right={2} top={"50%"} transform={"translateY(-50%)"} fontSize={12} color={"white"} w={6} h={6} borderRadius={"50%"}  display={{base:"none", lg:"flex"}} alignItems={"center"} justifyContent={"center"} bg={"red.400"} border={"solid 2px "} borderColor={"red.400"} >1</Box>
                     <DashboardLink text='Orders' href='/admin/orders' icon={<MdListAlt />} variant='navlink' />
                 </Box>
             </Box>

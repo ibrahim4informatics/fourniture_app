@@ -1,7 +1,8 @@
 import type { Customer } from "@/pages/dashboard/customers";
 import { Button, ButtonGroup, IconButton, Menu, Pagination, Portal, Table, Text } from "@chakra-ui/react";
+import { IoIosMore } from "react-icons/io";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 type CustomersTableProps = {
   customers: Customer[]
