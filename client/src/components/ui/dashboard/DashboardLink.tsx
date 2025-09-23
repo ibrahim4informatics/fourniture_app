@@ -17,7 +17,7 @@ const DashboardLink: React.FC<Props> = ({ href, text, icon, variant = "link" }) 
         <Box asChild w={"full"} color={"gray.700"} bg={location.pathname === href ?"red.200":"gray.200"} rounded={"md"} px={3} py={4} display={"flex"} alignItems={"center"} justifyContent={{base:"center", lg:"start"}} gap={2}>
           
             {variant === "navlink" ?
-                <NavLink to={href}>
+                <NavLink to={href} end>
                     {icon && icon}
 
                     <Text display={{base:'none', lg:"block"}}>{text}</Text>

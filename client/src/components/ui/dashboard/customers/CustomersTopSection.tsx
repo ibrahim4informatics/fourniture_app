@@ -1,8 +1,7 @@
 import { Box, Button, Input, InputGroup, Text } from "@chakra-ui/react";
-import { useState, type ChangeEvent } from "react";
+import {  type ChangeEvent } from "react";
 import { IoIosSearch, IoIosSettings } from "react-icons/io";
 import { useSearchParams } from "react-router-dom";
-import ShowCustomer from "./ShowCustomer";
 import { AnimatePresence } from "motion/react";
 import CustomersFilters from "../CustomersFilters";
 import { useDispatch } from "react-redux";

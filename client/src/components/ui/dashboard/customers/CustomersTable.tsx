@@ -1,4 +1,6 @@
+import { useAppDispatch } from "@/hooks/stateHooks";
 import type { Customer } from "@/pages/dashboard/customers";
+import { setShownCustomerID } from "@/store/slices/dashboardSlice";
 import { Button, ButtonGroup, IconButton, Menu, Pagination, Portal, Table, Text } from "@chakra-ui/react";
 import { IoIosMore } from "react-icons/io";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
@@ -16,6 +18,8 @@ type CustomersTableProps = {
 const CustomersTable: React.FC<CustomersTableProps> = ({ customers }) => {
 
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const dispatch = useAppDispatch();
   const getPage = () => Number.parseInt(searchParams.get("page") || "1");
   const setPage = (page: number) => {
     const newSearchParams = new URLSearchParams(searchParams);
@@ -55,14 +59,14 @@ const CustomersTable: React.FC<CustomersTableProps> = ({ customers }) => {
                     <Portal>
                       <Menu.Positioner>
                         <Menu.Content>
-                          <Menu.Item asChild value='show-order'>
-                            <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} asChild><Link to={`/admin/customers/${customer.id}`}>Show Customer</Link></Text>
+                          <Menu.Item asChild value='show-customer'>
+                            <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} onClick={()=> {dispatch(setShownCustomerID(customer.id))} } >Show Customer</Text>
                           </Menu.Item>
-                          <Menu.Item asChild value='edit-order'>
+                          <Menu.Item asChild value='edit-customer'>
                             <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} asChild><Link to={`/admin/customers/edit/${customer.id}`}>Edit Customer</Link></Text>
                           </Menu.Item>
 
-                          <Menu.Item asChild value='delete-order'>
+                          <Menu.Item asChild value='delete-customer'>
                             <Text color={"red.700"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} asChild><Button variant={"plain"} onClick={() => { console.log("delete customer id" + customer.id) }}>Delete Customer</Button></Text>
                           </Menu.Item>
                         </Menu.Content>

@@ -1,12 +1,13 @@
 import CustomersTable from '@/components/ui/dashboard/customers/CustomersTable'
 import CustomerTopSection from '@/components/ui/dashboard/customers/CustomersTopSection'
-import { FramerModal } from '@/components/ui/Modale'
+import ShowCustomerDetails from '@/components/ui/dashboard/customers/ShowCustomerDetails'
+import { useAppSelector } from '@/hooks/stateHooks'
 import DashboardLayout from '@/layouts/DashboardLayout'
-import { Box, Button, ButtonGroup, Heading, IconButton, Input, InputGroup, Menu, Pagination, Portal, Table, Text } from '@chakra-ui/react'
-import type { ChangeEvent, EventHandler, InputEventHandler } from 'react'
-import { IoIosAdd, IoIosArrowBack, IoIosMore, IoIosSearch, IoIosSettings } from 'react-icons/io'
-import { LuChevronLeft, LuChevronRight } from 'react-icons/lu'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Box } from '@chakra-ui/react'
+import { AnimatePresence } from 'motion/react'
+import { useState } from 'react'
+
+
 
 
 //types
@@ -47,12 +48,18 @@ const Customers = () => {
     { id: 20, first_name: "Yasmine", last_name: "Lahlou", email: "yasmine@hotmail.com", phone: "0678956231" }
   ];
 
+
+  const shownCustomerId = useAppSelector((state) => state.dahsboard.customerShownId);
   return (
     <DashboardLayout>
       <Box w={"full"} maxW={1280} mx={"auto"}>
         <CustomerTopSection />
         <CustomersTable customers={customers} />
       </Box>
+
+      <AnimatePresence>
+        {shownCustomerId && <ShowCustomerDetails initial={{ right: "-100%" }} animate={{ right: 0 }} exit={{right:"-100%"}} customer_id={shownCustomerId} />}
+      </AnimatePresence>
     </DashboardLayout>
   )
 }
