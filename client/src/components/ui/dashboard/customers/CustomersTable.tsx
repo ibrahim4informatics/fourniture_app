@@ -1,6 +1,6 @@
 import { useAppDispatch } from "@/hooks/stateHooks";
 import type { Customer } from "@/pages/dashboard/customers";
-import { setShownCustomerID } from "@/store/slices/dashboardSlice";
+import { setEditingCustomerId, setShownCustomerID } from "@/store/slices/dashboardSlice";
 import { Button, ButtonGroup, IconButton, Menu, Pagination, Portal, Table, Text } from "@chakra-ui/react";
 import { IoIosMore } from "react-icons/io";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
@@ -63,7 +63,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({ customers }) => {
                             <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} onClick={()=> {dispatch(setShownCustomerID(customer.id))} } >Show Customer</Text>
                           </Menu.Item>
                           <Menu.Item asChild value='edit-customer'>
-                            <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} asChild><Link to={`/admin/customers/edit/${customer.id}`}>Edit Customer</Link></Text>
+                            <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} onClick={()=> {dispatch(setEditingCustomerId(customer.id))} }>Edit Customer</Text>
                           </Menu.Item>
 
                           <Menu.Item asChild value='delete-customer'>

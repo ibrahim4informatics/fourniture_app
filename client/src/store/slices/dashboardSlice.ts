@@ -2,15 +2,17 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 
 interface DashboardState {
-    showCustomerFilters: boolean,
+    showCustomerFilters: boolean
     customerShownId: number | string | null
+    editingCustomerId: number | string | null
 }
 
 
 
 const initialState: DashboardState = {
     showCustomerFilters: false,
-    customerShownId: null
+    customerShownId: null,
+    editingCustomerId: null
 }
 
 const DashboardSlice = createSlice({
@@ -21,12 +23,16 @@ const DashboardSlice = createSlice({
             state.showCustomerFilters = payload === "show";
         },
 
-        setShownCustomerID: (state, { payload: customerId  }: PayloadAction<number | string | null >) => {
+        setShownCustomerID: (state, { payload: customerId }: PayloadAction<number | string | null>) => {
             state.customerShownId = customerId;
+        },
+
+        setEditingCustomerId: (state, { payload }: PayloadAction<number | string | null>) => {
+            state.editingCustomerId = payload
         }
     }
 })
 
 
-export const { customersFilterToggler, setShownCustomerID } = DashboardSlice.actions;
+export const { customersFilterToggler, setShownCustomerID, setEditingCustomerId } = DashboardSlice.actions;
 export default DashboardSlice.reducer;
