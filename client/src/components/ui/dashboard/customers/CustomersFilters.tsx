@@ -27,7 +27,7 @@ const CustomersFilters = React.forwardRef((_props, ref) => {
             <Box w={"full"} display={"flex"} alignItems={"center"} gap={3}>
 
                 <Button colorPalette={"red"} onClick={() => { dispatch(customersFilterToggler("hide")) }} variant={"subtle"}><IoIosArrowBack /></Button>
-                <Text fontWeight={"bold"} fontSize={24}>Filter Users</Text>
+                <Text fontWeight={"bold"} fontSize={24}>Filter Customers</Text>
 
             </Box>
             <Box w={"full"} px={2} flex={1} gap={6} display={"flex"} flexDir={"column"} overflowY={"auto"}>
