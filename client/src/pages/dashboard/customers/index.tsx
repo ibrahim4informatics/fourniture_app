@@ -4,9 +4,8 @@ import EditCustomerDetails from '@/components/ui/dashboard/customers/EditCustome
 import ShowCustomerDetails from '@/components/ui/dashboard/customers/ShowCustomerDetails'
 import { useAppSelector } from '@/hooks/stateHooks'
 import DashboardLayout from '@/layouts/DashboardLayout'
-import { Box, Show } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import { AnimatePresence } from 'motion/react'
-import { useState } from 'react'
 
 
 
@@ -63,16 +62,25 @@ const Customers = () => {
 
         {shownCustomerId && <ShowCustomerDetails key={1} initial={{ right: "-100%" }} animate={{ right: 0 }} exit={{ right: "-100%" }} customer_id={shownCustomerId} />}
 
-        <Box display={{base:"none", lg:"block"}}>
-          {editingCustomerId && <EditCustomerDetails key={2} initial={{ right: shownCustomerId ? 0 : "-100%" }} animate={{ right: shownCustomerId ? 400 : 0 }} exit={{ right: "-100%" }} />}
 
-        </Box>
+        {editingCustomerId && (
+          <>
+
+            <Box display={{ base: "none", lg: "block" }}>
+              <EditCustomerDetails key={2} initial={{ right: shownCustomerId ? 0 : "-100%" }} animate={{ right: shownCustomerId ? 400 : 0 }} exit={{ right: editingCustomerId ? 0 : "-100%" }} />
+            </Box>
+
+            <Box display={{ base: "block", lg: "none" }}>
+               <EditCustomerDetails key={3} initial={{ left: "-100%" }} animate={{ left: 0 }} exit={{ left: "-100%" }} />
+
+            </Box>
+
+          </>
+        )}
 
 
-        <Box display={{base:"block", lg:"base"}}>
-          {editingCustomerId && <EditCustomerDetails key={2} initial={{ left: "-100%" }} animate={{ left: 0 }} exit={{ left: "-100%" }} />}
 
-        </Box>
+
       </AnimatePresence>
 
     </DashboardLayout>

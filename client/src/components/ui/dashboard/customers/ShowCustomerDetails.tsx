@@ -5,8 +5,8 @@ import { motion } from 'motion/react'
 import React from 'react'
 import { BiPackage } from 'react-icons/bi'
 import { CiLocationOn } from 'react-icons/ci'
-import { IoIosCall, IoIosClose, IoIosMail, IoIosOpen, IoIosTrash } from 'react-icons/io'
-import { IoBanOutline, IoPencilOutline, IoPhonePortraitOutline, IoTrashBinOutline } from 'react-icons/io5'
+import { IoIosCall, IoIosClose, IoIosMail } from 'react-icons/io'
+import { IoBanOutline, IoPencilOutline,  IoTrashBinOutline } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
 
 const recentOrders = [

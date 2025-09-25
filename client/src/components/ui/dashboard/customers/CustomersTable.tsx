@@ -4,7 +4,7 @@ import { setEditingCustomerId, setShownCustomerID } from "@/store/slices/dashboa
 import { Button, ButtonGroup, IconButton, Menu, Pagination, Portal, Table, Text } from "@chakra-ui/react";
 import { IoIosMore } from "react-icons/io";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
-import { Link, useSearchParams } from "react-router-dom";
+import {  useSearchParams } from "react-router-dom";
 
 type CustomersTableProps = {
   customers: Customer[]

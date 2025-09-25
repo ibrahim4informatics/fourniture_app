@@ -6,14 +6,13 @@ import React from 'react'
 import { IoIosArrowBack } from 'react-icons/io'
 import urlParamSetter from '@/utils/urlParamSetter';
 import { useSearchParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { getWilayas } from '@/services/wilayas'
+import useWilayasQuery from '@/hooks/queries/useWilayasQuery'
 
-const CustomersFilters = React.forwardRef((props, ref) => {
+const CustomersFilters = React.forwardRef((_props, ref) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const dispatch = useAppDispatch();
 
-    const { isLoading, data: wilaya, error } = useQuery({ queryKey: ["wilayas"], queryFn: () => getWilayas(undefined) })
+    const { isLoading, data: wilaya, error } = useWilayasQuery();
 
 
     const handleChange = (name: string, value: string) => {
@@ -35,22 +34,20 @@ const CustomersFilters = React.forwardRef((props, ref) => {
 
                 <Field.Root>
                     <Field.Label>Email</Field.Label>
-                    <Input type='email' name='email' value={searchParams.get("email") || ""} onChange={(e)=>handleChange(e.target.name, e.target.value)} />
+                    <Input type='email' name='email' value={searchParams.get("email") || ""} onChange={(e) => handleChange(e.target.name, e.target.value)} />
                 </Field.Root>
-
-
 
 
                 <Field.Root>
                     <Field.Label>First Name</Field.Label>
-                    <Input type='text' name='first_name' value={searchParams.get("first_name") || ""} onChange={(e)=>handleChange(e.target.name, e.target.value)} />
+                    <Input type='text' name='first_name' value={searchParams.get("first_name") || ""} onChange={(e) => handleChange(e.target.name, e.target.value)} />
                 </Field.Root>
 
 
 
                 <Field.Root>
                     <Field.Label>Last Name</Field.Label>
-                    <Input type='text' name='last_name' value={searchParams.get("last_name") || ""} onChange={(e)=>handleChange(e.target.name, e.target.value)} />
+                    <Input type='text' name='last_name' value={searchParams.get("last_name") || ""} onChange={(e) => handleChange(e.target.name, e.target.value)} />
                 </Field.Root>
 
 
@@ -59,7 +56,7 @@ const CustomersFilters = React.forwardRef((props, ref) => {
                 <Field.Root>
 
                     <Field.Label>Phone Number</Field.Label>
-                    <Input type='text' name='phone' value={searchParams.get("phone") || ""} onChange={(e)=>handleChange(e.target.name, e.target.value)} placeholder='examlpe:0566489878' maxLength={10} />
+                    <Input type='text' name='phone' value={searchParams.get("phone") || ""} onChange={(e) => handleChange(e.target.name, e.target.value)} placeholder='examlpe:0566489878' maxLength={10} />
 
                 </Field.Root>
 
@@ -69,14 +66,16 @@ const CustomersFilters = React.forwardRef((props, ref) => {
 
                     <Field.Label>Wilaya</Field.Label>
 
-                    <NativeSelect.Root>
-                        {isLoading ? <Spinner size={"sm"} colorPalette={"gray"} /> : (<>
-                            <NativeSelect.Field name='wilaya' value={searchParams.get("wilaya") || ""} onChange={(e) => { handleChange(e.target.name, e.target.value) }}>
-                                <option value="">All</option>
-                                {wilaya.map((w: any) => <option key={w.code} value={w.name}>{w.code}-{w.name}</option>)}
-                            </NativeSelect.Field>
-                            <NativeSelect.Indicator /></>)}
-                    </NativeSelect.Root>
+                    {error ? <Text fontSize={18} color={"red.600"} my={2}>{error.message}</Text> : (
+                        <NativeSelect.Root>
+                            {isLoading ? <Spinner size={"sm"} colorPalette={"gray"} /> : (<>
+                                <NativeSelect.Field name='wilaya' value={searchParams.get("wilaya") || ""} onChange={(e) => { handleChange(e.target.name, e.target.value) }}>
+                                    <option value="">All</option>
+                                    {wilaya && wilaya.map((w: any) => <option key={w.code} value={w.name}>{w.code}-{w.name}</option>)}
+                                </NativeSelect.Field>
+                                <NativeSelect.Indicator /></>)}
+                        </NativeSelect.Root>
+                    )}
 
 
                 </Field.Root>

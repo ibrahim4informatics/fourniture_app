@@ -1,16 +1,18 @@
 import axios from "@/config/axios"
 
-const getWilayas = async (params:any) => {
-    try {
+
+export type Wilaya = {
+    [key: string]: string,
+}
+
+
+
+const getWilayas = async (params: any): Promise<Wilaya[]> => {
+
         const wilayas = await axios.get("/data/wilayas.json", { params: params || undefined });
-        console.log(wilayas)
         return wilayas.data;
-    }
-    catch (err: any) {
-
-        return err?.message || err;
-
-    }
+    
+    
 }
 
 
