@@ -3,7 +3,7 @@ import {  type ChangeEvent } from "react";
 import { IoIosSearch, IoIosSettings } from "react-icons/io";
 import { useSearchParams } from "react-router-dom";
 import { AnimatePresence } from "motion/react";
-import CustomersFilters from "../CustomersFilters";
+import CustomersFilters from "./CustomersFilters";
 import { useDispatch } from "react-redux";
 import { customersFilterToggler } from "@/store/slices/dashboardSlice";
 import { useAppSelector } from "@/hooks/stateHooks";

@@ -56,7 +56,9 @@ const CustomersFilters = React.forwardRef((_props, ref) => {
                 <Field.Root>
 
                     <Field.Label>Phone Number</Field.Label>
-                    <Input type='text' name='phone' value={searchParams.get("phone") || ""} onChange={(e) => handleChange(e.target.name, e.target.value)} placeholder='examlpe:0566489878' maxLength={10} />
+                    <Input onInput={(e) => {
+                        e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "");
+                    }} type='text' pattern='/d*' inputMode='numeric' name='phone' value={searchParams.get("phone") || ""} onChange={(e) => handleChange(e.target.name, e.target.value)} placeholder='examlpe:0566489878' maxLength={10} />
 
                 </Field.Root>
 

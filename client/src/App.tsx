@@ -9,22 +9,27 @@ import Wishlist from "./pages/wishlist"
 import Checkout from "./pages/checkout"
 import Login from "./pages/login"
 import Overview from "./pages/dashboard/overview"
-import Customers from "./pages/dashboard/customers"
-import ShowCustomerDetails from "./pages/dashboard/customers/show"
+import CustomersManagement from "./pages/dashboard/customer-management"
+import Error from "./pages/error"
+import ProductsManagement from "./pages/dashboard/products-management"
 
 const routes = createBrowserRouter([
-  { path: "/", element: <Home />, errorElement: <h1>Error</h1> },
-  { path: "/cart", element: <Cart />, errorElement: <h1>Error</h1> },
-  { path: "/login", element: <Login />, errorElement: <h1>Error</h1> },
-  { path: "/register", element: <Cart />, errorElement: <h1>Error</h1> },
-  { path: "/checkout", element: <Checkout />, errorElement: <h1>Error</h1> },
-  { path: "/wishlist", element: <Wishlist />, errorElement: <h1>Error</h1> },
-  { path: "/user", element: <User />, errorElement: <h1>Error</h1> },
-  { path: "/admin", element: <Overview />, errorElement: <h1>Error</h1> },
-  { path: "/admin/customers", element: <Customers />, errorElement: <h1>Error</h1> },
-  {path:"/admin/customers/:id", element:<ShowCustomerDetails/>, errorElement:<h1>Error</h1>},
-  { path: "/shop", element: <Shop />, errorElement: <h1>Error</h1> },
-  { path: "/shop/:id", element: <SingleProduct />, errorElement: <h1>Error</h1> },
+  { path: "/", element: <Home />, errorElement: <Error /> },
+  { path: "/cart", element: <Cart />, errorElement: <Error /> },
+  { path: "/login", element: <Login />, errorElement: <Error /> },
+  { path: "/register", element: <Cart />, errorElement: <Error /> },
+  { path: "/checkout", element: <Checkout />, errorElement: <Error /> },
+  { path: "/wishlist", element: <Wishlist />, errorElement: <Error /> },
+  { path: "/user", element: <User />, errorElement: <Error /> },
+  {
+    path: "/admin", errorElement: <Error />, children: [
+      { path: "", element: <Overview />, index:true },
+      { path: "customers", element: <CustomersManagement /> },
+      { path: "products", element: <ProductsManagement /> },
+    ]
+  },
+  { path: "/shop", element: <Shop />, errorElement: <Error /> },
+  { path: "/shop/:id", element: <SingleProduct />, errorElement: <Error /> },
 ])
 function App() {
   return (

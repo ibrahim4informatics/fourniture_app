@@ -1,13 +1,7 @@
 import CustomersTable from '@/components/ui/dashboard/customers/CustomersTable'
 import CustomerTopSection from '@/components/ui/dashboard/customers/CustomersTopSection'
-import EditCustomerDetails from '@/components/ui/dashboard/customers/EditCustomerDetails'
-import ShowCustomerDetails from '@/components/ui/dashboard/customers/ShowCustomerDetails'
-import { useAppSelector } from '@/hooks/stateHooks'
 import DashboardLayout from '@/layouts/DashboardLayout'
 import { Box } from '@chakra-ui/react'
-import { AnimatePresence } from 'motion/react'
-
-
 
 
 //types
@@ -23,7 +17,7 @@ export type Customer = {
 
 
 
-const Customers = () => {
+const CustomersManagement = () => {
 
   const customers = [
     { id: 1, first_name: "John", last_name: "Smith", email: "john@yahoo.com", phone: "0654512365" },
@@ -48,9 +42,6 @@ const Customers = () => {
     { id: 20, first_name: "Yasmine", last_name: "Lahlou", email: "yasmine@hotmail.com", phone: "0678956231" }
   ];
 
-
-  const shownCustomerId = useAppSelector((state) => state.dahsboard.customerShownId);
-  const editingCustomerId = useAppSelector((state) => state.dahsboard.editingCustomerId);
   return (
     <DashboardLayout>
       <Box w={"full"} maxW={1280} mx={"auto"}>
@@ -58,33 +49,8 @@ const Customers = () => {
         <CustomersTable customers={customers} />
       </Box>
 
-      <AnimatePresence>
-
-        {shownCustomerId && <ShowCustomerDetails key={1} initial={{ right: "-100%" }} animate={{ right: 0 }} exit={{ right: "-100%" }} customer_id={shownCustomerId} />}
-
-
-        {editingCustomerId && (
-          <>
-
-            <Box display={{ base: "none", lg: "block" }}>
-              <EditCustomerDetails key={2} initial={{ right: shownCustomerId ? 0 : "-100%" }} animate={{ right: shownCustomerId ? 400 : 0 }} exit={{ right: editingCustomerId ? 0 : "-100%" }} />
-            </Box>
-
-            <Box display={{ base: "block", lg: "none" }}>
-               <EditCustomerDetails key={3} initial={{ left: "-100%" }} animate={{ left: 0 }} exit={{ left: "-100%" }} />
-
-            </Box>
-
-          </>
-        )}
-
-
-
-
-      </AnimatePresence>
-
     </DashboardLayout>
   )
 }
 
-export default Customers
+export default CustomersManagement;

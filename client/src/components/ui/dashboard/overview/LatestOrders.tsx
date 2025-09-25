@@ -1,4 +1,6 @@
-import { Box, Button, EmptyState, FormatNumber, Menu, Portal, Table, Text } from '@chakra-ui/react'
+import { useAppDispatch } from '@/hooks/stateHooks'
+import { setShownCustomerID } from '@/store/slices/dashboardSlice'
+import { Box, Button, FormatNumber, Menu, Portal, Table, Text } from '@chakra-ui/react'
 import React from 'react'
 import { IoIosMore } from 'react-icons/io'
 import { Link } from 'react-router-dom'
@@ -20,11 +22,13 @@ const Order: React.FC<OrderProps> = ({ ammount, customer, date, id, status }) =>
     const handleDeleteOrder = () => {
         console.log("delete order id= " + id)
     }
+
+    const dispatch = useAppDispatch();
     return (
 
         <Table.Row>
             <Table.Cell>#{id}</Table.Cell>
-            <Table.Cell><Text asChild color={"red.400"} textDecor={"underline"}><Link to={`/admin/customers/${customer.id}`}>{`${customer.first_name} ${customer.last_name}`}</Link></Text></Table.Cell>
+            <Table.Cell><Text asChild color={"red.400"} textDecor={"underline"}><Button variant={"plain"} onClick={() => { dispatch(setShownCustomerID(customer.id)) }}>{`${customer.first_name} ${customer.last_name}`}</Button></Text></Table.Cell>
             <Table.Cell>{new Date(date).toLocaleDateString("US", { year: "numeric", month: "short", day: "numeric" })}</Table.Cell>
             <Table.Cell>
                 <Box display={"flex"} alignItems={"center"} gap={1}>

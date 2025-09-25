@@ -1,19 +1,14 @@
 
-import OverviewTopSection from '@/components/ui/dashboard/OverviewTopSection'
+import OverviewTopSection from '@/components/ui/dashboard/overview/OverviewTopSection'
 import DashboardLayout from '@/layouts/DashboardLayout'
-import { Badge, Box, Button, FormatNumber, Grid, GridItem, Heading, Image, Menu, Portal, Table, Text } from '@chakra-ui/react'
-import TotalOrdersWidget from '@/components/ui/dashboard/TotalOrdersWidget'
-import TodayRevenueWidget from '@/components/ui/dashboard/TodayRevenueWidget'
-import TodaySalesWidget from '@/components/ui/dashboard/TodaySalesWidget'
+import { Grid } from '@chakra-ui/react'
+import TotalOrdersWidget from '@/components/ui/dashboard/overview/TotalOrdersWidget'
+import TodayRevenueWidget from '@/components/ui/dashboard/overview/TodayRevenueWidget'
+import TodaySalesWidget from '@/components/ui/dashboard/overview/TodaySalesWidget'
 
-import { useChart, Chart } from "@chakra-ui/charts";
-import { Bar, BarChart, CartesianGrid, LabelList, Legend, XAxis, YAxis } from "recharts";
-import ProfitLossWidget from '@/components/ui/dashboard/ProfitLossWidget'
-import { Link } from 'react-router-dom'
-import { MdMore } from 'react-icons/md'
-import { IoIosMore } from 'react-icons/io'
-import Modale from '@/components/ui/Modale'
-import LatestOrders, { type OrderProps } from '@/components/ui/dashboard/LatestOrders'
+import ProfitLossWidget from '@/components/ui/dashboard/overview/ProfitLossWidget'
+
+import LatestOrders, { type OrderProps } from '@/components/ui/dashboard/overview/LatestOrders'
 const Overview = () => {
 
     const data = [

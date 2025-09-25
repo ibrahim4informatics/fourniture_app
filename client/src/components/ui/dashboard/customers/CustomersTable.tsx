@@ -1,5 +1,5 @@
 import { useAppDispatch } from "@/hooks/stateHooks";
-import type { Customer } from "@/pages/dashboard/customers";
+import type { Customer } from "@/pages/dashboard/customer-management";
 import { setEditingCustomerId, setShownCustomerID } from "@/store/slices/dashboardSlice";
 import { Button, ButtonGroup, IconButton, Menu, Pagination, Portal, Table, Text } from "@chakra-ui/react";
 import { IoIosMore } from "react-icons/io";
