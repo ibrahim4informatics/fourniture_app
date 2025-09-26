@@ -4,19 +4,19 @@
       "id": 1,
       "title": "Modern Accent Chair",
       "description": "A vibrant upholstered accent chair for a stylish living space.",
-      "thumbnail": "https://images.pexels.com/photos/2179214/pexels-photo-2179214.jpeg",
+      "thumbnail": "https://picsum.photos/seed/chair1/400/300",
       "price": 129.99,
       "media": [
         {
           "order": 1,
-          "link": "https://images.pexels.com/photos/2179214/pexels-photo-2179214.jpeg"
+          "link": "https://picsum.photos/seed/chair1/600/400"
         },
         {
           "order": 2,
-          "link": "https://images.pexels.com/photos/2179215/pexels-photo-2179215.jpeg"
+          "link": "https://picsum.photos/seed/chair2/600/400"
         }
       ],
-      "details": "<p>This <strong>modern accent chair</strong> brings a pop of color to your home. Upholstered in durable fabric with comfortable padding, it's perfect for reading nooks, bedrooms, or living spaces. Pair it with a small side table for a cozy setup.</p>",
+      "details": "<p>This <strong>modern accent chair</strong> brings a pop of color to your home. Upholstered in durable fabric with comfortable padding.</p>",
       "category": "chairs",
       "rating": 4.6,
       "availableSizes": [
@@ -28,266 +28,473 @@
         "Blue",
         "Gray",
         "Yellow"
-      ]
+      ],
+      "sku": "CHAIR-0001",
+      "stock": 25,
+      "createdAt": "2025-08-12T12:00:00Z",
+      "updatedAt": "2025-09-22T12:00:00Z",
+      "discount": 10
     },
     {
       "id": 2,
-      "title": "Scandi Display Cabinet",
-      "description": "Minimalist cabinet with open shelves and storage cubbies.",
-      "thumbnail": "https://images.pexels.com/photos/5824523/pexels-photo-5824523.jpeg",
-      "price": 249.99,
+      "title": "Wooden Dining Table",
+      "description": "A solid oak dining table that comfortably seats six.",
+      "thumbnail": "https://picsum.photos/seed/table1/400/300",
+      "price": 499.99,
       "media": [
         {
           "order": 1,
-          "link": "https://images.pexels.com/photos/5824523/pexels-photo-5824523.jpeg"
+          "link": "https://picsum.photos/seed/table1/600/400"
         },
         {
           "order": 2,
-          "link": "https://images.pexels.com/photos/5824524/pexels-photo-5824524.jpeg"
+          "link": "https://picsum.photos/seed/table2/600/400"
         }
       ],
-      "details": "<p>The <em>Scandi display cabinet</em> offers open shelves for display and hidden storage for organization. Crafted with clean lines and natural wood tones, it embodies Scandinavian minimalism, making it suitable for any modern home.</p>",
-      "category": "storage",
-      "rating": 4.3,
+      "details": "<p>Crafted from <strong>premium oak</strong>, this dining table is durable and stylish. Perfect for family meals or gatherings.</p>",
+      "category": "tables",
+      "rating": 4.8,
       "availableSizes": [
-        "One Size"
+        "6-Seater",
+        "8-Seater"
       ],
       "availableColors": [
-        "White",
-        "Natural Wood",
-        "Black"
-      ]
+        "Brown",
+        "Walnut"
+      ],
+      "sku": "TABLE-0001",
+      "stock": 12,
+      "createdAt": "2025-07-20T15:30:00Z",
+      "updatedAt": "2025-09-10T09:45:00Z",
+      "discount": 15
     },
     {
       "id": 3,
-      "title": "Black Sectional Sofa",
-      "description": "Elegant L-shaped sectional with premium upholstery.",
-      "thumbnail": "https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg",
+      "title": "Luxury Leather Sofa",
+      "description": "Premium leather sofa with plush cushions for ultimate comfort.",
+      "thumbnail": "https://picsum.photos/seed/sofa1/400/300",
       "price": 899.99,
       "media": [
         {
           "order": 1,
-          "link": "https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg"
+          "link": "https://picsum.photos/seed/sofa1/600/400"
         },
         {
           "order": 2,
-          "link": "https://images.pexels.com/photos/276584/pexels-photo-276584.jpeg"
+          "link": "https://picsum.photos/seed/sofa2/600/400"
         }
       ],
-      "details": "<p>This <strong>black sectional sofa</strong> features plush cushions and a versatile L-shape design, making it the centerpiece of your living room. Its durable fabric and sturdy frame provide long-lasting comfort for gatherings and lounging.</p>",
+      "details": "<p>This <em>luxury leather sofa</em> combines modern design with exceptional comfort. Available in multiple colors.</p>",
       "category": "sofas",
-      "rating": 4.8,
+      "rating": 4.9,
       "availableSizes": [
         "2-Seater",
-        "3-Seater",
-        "L-Shape Large"
+        "3-Seater"
       ],
       "availableColors": [
         "Black",
-        "Gray",
-        "Beige"
-      ]
+        "Brown",
+        "Cream"
+      ],
+      "sku": "SOFA-0001",
+      "stock": 7,
+      "createdAt": "2025-06-05T10:00:00Z",
+      "updatedAt": "2025-09-18T14:20:00Z",
+      "discount": 20
     },
     {
       "id": 4,
-      "title": "Cozy Lounge Setup",
-      "description": "Soft seating arrangement with coffee table and cushions.",
-      "thumbnail": "https://images.pexels.com/photos/31970870/pexels-photo-31970870.jpeg",
-      "price": 599.99,
+      "title": "Glass Coffee Table",
+      "description": "A minimalist glass coffee table with steel legs.",
+      "thumbnail": "https://picsum.photos/seed/coffeetable1/400/300",
+      "price": 199.99,
       "media": [
         {
           "order": 1,
-          "link": "https://images.pexels.com/photos/31970870/pexels-photo-31970870.jpeg"
+          "link": "https://picsum.photos/seed/coffeetable1/600/400"
         },
         {
           "order": 2,
-          "link": "https://images.pexels.com/photos/31970871/pexels-photo-31970871.jpeg"
+          "link": "https://picsum.photos/seed/coffeetable2/600/400"
         }
       ],
-      "details": "<p>Create a <em>cozy lounge</em> with this curated setup featuring a soft seating arrangement, coffee table, and accent cushions. Perfect for indoor relaxation or a stylish sunroom corner.</p>",
-      "category": "sets",
+      "details": "<p>A <strong>modern coffee table</strong> made with tempered glass and durable steel legs.</p>",
+      "category": "tables",
+      "rating": 4.4,
+      "availableSizes": [
+        "Standard"
+      ],
+      "availableColors": [
+        "Clear",
+        "Black Frame"
+      ],
+      "sku": "TABLE-0002",
+      "stock": 18,
+      "createdAt": "2025-05-10T11:15:00Z",
+      "updatedAt": "2025-09-01T08:00:00Z",
+      "discount": 5
+    },
+    {
+      "id": 5,
+      "title": "Office Desk Chair",
+      "description": "Ergonomic office chair with adjustable height and lumbar support.",
+      "thumbnail": "https://picsum.photos/seed/officechair1/400/300",
+      "price": 229.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://picsum.photos/seed/officechair1/600/400"
+        },
+        {
+          "order": 2,
+          "link": "https://picsum.photos/seed/officechair2/600/400"
+        }
+      ],
+      "details": "<p>Work comfortably with this <strong>ergonomic office chair</strong>, featuring breathable mesh and lumbar support.</p>",
+      "category": "chairs",
+      "rating": 4.7,
+      "availableSizes": [
+        "Standard"
+      ],
+      "availableColors": [
+        "Black",
+        "Gray"
+      ],
+      "sku": "CHAIR-0002",
+      "stock": 30,
+      "createdAt": "2025-06-22T14:50:00Z",
+      "updatedAt": "2025-09-19T09:30:00Z",
+      "discount": 12
+    },
+    {
+      "id": 6,
+      "title": "Queen Bed Frame",
+      "description": "Sturdy wooden bed frame with a modern headboard design.",
+      "thumbnail": "https://picsum.photos/seed/bed1/400/300",
+      "price": 649.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://picsum.photos/seed/bed1/600/400"
+        },
+        {
+          "order": 2,
+          "link": "https://picsum.photos/seed/bed2/600/400"
+        }
+      ],
+      "details": "<p>Upgrade your bedroom with this <em>queen-size bed frame</em>, crafted from high-quality wood.</p>",
+      "category": "beds",
+      "rating": 4.5,
+      "availableSizes": [
+        "Queen",
+        "King"
+      ],
+      "availableColors": [
+        "Walnut",
+        "White",
+        "Black"
+      ],
+      "sku": "BED-0001",
+      "stock": 10,
+      "createdAt": "2025-04-15T16:00:00Z",
+      "updatedAt": "2025-09-12T12:30:00Z",
+      "discount": 18
+    },
+    {
+      "id": 7,
+      "title": "Bookshelf Organizer",
+      "description": "Tall wooden bookshelf with multiple compartments.",
+      "thumbnail": "https://picsum.photos/seed/bookshelf1/400/300",
+      "price": 179.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://picsum.photos/seed/bookshelf1/600/400"
+        },
+        {
+          "order": 2,
+          "link": "https://picsum.photos/seed/bookshelf2/600/400"
+        }
+      ],
+      "details": "<p>This <strong>bookshelf organizer</strong> helps you keep your books and décor neatly arranged.</p>",
+      "category": "storage",
+      "rating": 4.3,
+      "availableSizes": [
+        "Tall",
+        "Medium"
+      ],
+      "availableColors": [
+        "Oak",
+        "Black"
+      ],
+      "sku": "STORAGE-0001",
+      "stock": 20,
+      "createdAt": "2025-03-12T13:40:00Z",
+      "updatedAt": "2025-09-08T07:20:00Z",
+      "discount": 8
+    },
+    {
+      "id": 8,
+      "title": "Kitchen Bar Stool",
+      "description": "Modern bar stool with padded seating and steel legs.",
+      "thumbnail": "https://picsum.photos/seed/stool1/400/300",
+      "price": 99.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://picsum.photos/seed/stool1/600/400"
+        },
+        {
+          "order": 2,
+          "link": "https://picsum.photos/seed/stool2/600/400"
+        }
+      ],
+      "details": "<p>Perfect for kitchens or home bars, this <strong>bar stool</strong> adds style and comfort to your seating.</p>",
+      "category": "chairs",
+      "rating": 4.2,
+      "availableSizes": [
+        "Standard"
+      ],
+      "availableColors": [
+        "White",
+        "Gray",
+        "Black"
+      ],
+      "sku": "CHAIR-0003",
+      "stock": 40,
+      "createdAt": "2025-05-30T17:25:00Z",
+      "updatedAt": "2025-09-11T11:10:00Z",
+      "discount": 10
+    },
+    {
+      "id": 9,
+      "title": "Wardrobe Closet",
+      "description": "Spacious wardrobe closet with sliding doors.",
+      "thumbnail": "https://picsum.photos/seed/wardrobe1/400/300",
+      "price": 749.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://picsum.photos/seed/wardrobe1/600/400"
+        },
+        {
+          "order": 2,
+          "link": "https://picsum.photos/seed/wardrobe2/600/400"
+        }
+      ],
+      "details": "<p>Organize your clothing in style with this <em>modern wardrobe closet</em>.</p>",
+      "category": "storage",
+      "rating": 4.7,
+      "availableSizes": [
+        "2-Door",
+        "3-Door"
+      ],
+      "availableColors": [
+        "White",
+        "Gray",
+        "Brown"
+      ],
+      "sku": "STORAGE-0002",
+      "stock": 9,
+      "createdAt": "2025-07-08T18:00:00Z",
+      "updatedAt": "2025-09-14T09:15:00Z",
+      "discount": 14
+    },
+    {
+      "id": 10,
+      "title": "Recliner Armchair",
+      "description": "Comfortable recliner armchair with footrest.",
+      "thumbnail": "https://picsum.photos/seed/recliner1/400/300",
+      "price": 359.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://picsum.photos/seed/recliner1/600/400"
+        },
+        {
+          "order": 2,
+          "link": "https://picsum.photos/seed/recliner2/600/400"
+        }
+      ],
+      "details": "<p>Relax in this <strong>recliner armchair</strong>, designed with a smooth reclining mechanism and padded cushions.</p>",
+      "category": "chairs",
       "rating": 4.5,
       "availableSizes": [
         "Standard"
       ],
       "availableColors": [
-        "Cream",
         "Brown",
         "Gray"
-      ]
+      ],
+      "sku": "CHAIR-0004",
+      "stock": 15,
+      "createdAt": "2025-04-02T19:10:00Z",
+      "updatedAt": "2025-09-16T10:05:00Z",
+      "discount": 9
     },
     {
-      "id": 5,
-      "title": "Wooden Coffee Table",
-      "description": "Rustic oak table with sturdy legs and smooth finish.",
-      "thumbnail": "https://images.pexels.com/photos/27059629/pexels-photo-27059629.jpeg",
-      "price": 179.99,
+      "id": 11,
+      "title": "Wooden Nightstand",
+      "description": "Compact nightstand with drawers for storage.",
+      "thumbnail": "https://picsum.photos/seed/nightstand1/400/300",
+      "price": 149.99,
       "media": [
         {
           "order": 1,
-          "link": "https://images.pexels.com/photos/27059629/pexels-photo-27059629.jpeg"
+          "link": "https://picsum.photos/seed/nightstand1/600/400"
         },
         {
           "order": 2,
-          "link": "https://images.pexels.com/photos/27059630/pexels-photo-27059630.jpeg"
+          "link": "https://picsum.photos/seed/nightstand2/600/400"
         }
       ],
-      "details": "<p>This <strong>wooden coffee table</strong> is crafted from high-quality oak, featuring a rustic look and smooth finish. Its simple yet durable design makes it an excellent addition to both modern and classic interiors.</p>",
+      "details": "<p>A <strong>nightstand</strong> made from solid wood, featuring drawers for convenient bedside storage.</p>",
       "category": "tables",
-      "rating": 4.2,
-      "availableSizes": [
-        "Small",
-        "Medium",
-        "Large"
-      ],
-      "availableColors": [
-        "Oak",
-        "Walnut",
-        "Black"
-      ]
-    },
-    {
-      "id": 6,
-      "title": "Mid-Century Armchair",
-      "description": "Comfortable armchair with vintage flair and wooden frame.",
-      "thumbnail": "https://images.pexels.com/photos/6312017/pexels-photo-6312017.jpeg",
-      "price": 219.99,
-      "media": [
-        {
-          "order": 1,
-          "link": "https://images.pexels.com/photos/6312017/pexels-photo-6312017.jpeg"
-        },
-        {
-          "order": 2,
-          "link": "https://images.pexels.com/photos/6312018/pexels-photo-6312018.jpeg"
-        }
-      ],
-      "details": "<p>The <em>mid-century armchair</em> blends comfort with a retro touch. Its wooden frame and soft cushions offer a perfect balance of durability and style, making it an ideal reading or lounge chair.</p>",
-      "category": "chairs",
       "rating": 4.4,
       "availableSizes": [
         "Small",
         "Medium"
       ],
       "availableColors": [
-        "Green",
-        "Blue",
-        "Gray"
-      ]
+        "Oak",
+        "Walnut"
+      ],
+      "sku": "TABLE-0003",
+      "stock": 22,
+      "createdAt": "2025-02-28T20:40:00Z",
+      "updatedAt": "2025-09-05T15:35:00Z",
+      "discount": 6
     },
     {
-      "id": 7,
-      "title": "Modern Bedside Table",
-      "description": "Compact bedside table with a drawer and lower shelf.",
-      "thumbnail": "https://images.pexels.com/photos/5998136/pexels-photo-5998136.jpeg",
-      "price": 99.99,
+      "id": 12,
+      "title": "TV Stand Cabinet",
+      "description": "Modern TV stand with shelves and cable management.",
+      "thumbnail": "https://picsum.photos/seed/tvstand1/400/300",
+      "price": 259.99,
       "media": [
         {
           "order": 1,
-          "link": "https://images.pexels.com/photos/5998136/pexels-photo-5998136.jpeg"
+          "link": "https://picsum.photos/seed/tvstand1/600/400"
         },
         {
           "order": 2,
-          "link": "https://images.pexels.com/photos/5998137/pexels-photo-5998137.jpeg"
+          "link": "https://picsum.photos/seed/tvstand2/600/400"
         }
       ],
-      "details": "<p>The <strong>modern bedside table</strong> combines practicality with style, featuring a drawer for essentials and a lower shelf for decor or books. Its sleek design complements contemporary bedrooms.</p>",
-      "category": "tables",
-      "rating": 4.1,
-      "availableSizes": [
-        "One Size"
-      ],
-      "availableColors": [
-        "White",
-        "Black",
-        "Natural"
-      ]
-    },
-    {
-      "id": 8,
-      "title": "Scandinavian Dining Chair",
-      "description": "Lightweight wooden chair with Scandinavian design.",
-      "thumbnail": "https://images.pexels.com/photos/6633448/pexels-photo-6633448.jpeg",
-      "price": 89.99,
-      "media": [
-        {
-          "order": 1,
-          "link": "https://images.pexels.com/photos/6633448/pexels-photo-6633448.jpeg"
-        },
-        {
-          "order": 2,
-          "link": "https://images.pexels.com/photos/6633449/pexels-photo-6633449.jpeg"
-        }
-      ],
-      "details": "<p>The <em>Scandinavian dining chair</em> is lightweight yet sturdy, designed with clean lines and natural finishes. It pairs perfectly with wooden dining tables and brings a touch of Nordic charm to your dining room.</p>",
-      "category": "chairs",
-      "rating": 4.0,
+      "details": "<p>This <em>TV stand cabinet</em> keeps your living room organized with open shelves and hidden storage.</p>",
+      "category": "storage",
+      "rating": 4.6,
       "availableSizes": [
         "Standard"
       ],
       "availableColors": [
         "White",
-        "Wood",
-        "Black"
-      ]
+        "Black",
+        "Brown"
+      ],
+      "sku": "STORAGE-0003",
+      "stock": 14,
+      "createdAt": "2025-01-25T21:55:00Z",
+      "updatedAt": "2025-09-20T08:50:00Z",
+      "discount": 11
     },
     {
-      "id": 9,
-      "title": "Contemporary Sideboard",
-      "description": "Stylish sideboard with multiple storage compartments.",
-      "thumbnail": "https://images.pexels.com/photos/7195588/pexels-photo-7195588.jpeg",
-      "price": 349.99,
+      "id": 13,
+      "title": "Outdoor Patio Set",
+      "description": "Durable rattan patio set with cushions.",
+      "thumbnail": "https://picsum.photos/seed/patio1/400/300",
+      "price": 599.99,
       "media": [
         {
           "order": 1,
-          "link": "https://images.pexels.com/photos/7195588/pexels-photo-7195588.jpeg"
+          "link": "https://picsum.photos/seed/patio1/600/400"
         },
         {
           "order": 2,
-          "link": "https://images.pexels.com/photos/7195590/pexels-photo-7195590.jpeg"
+          "link": "https://picsum.photos/seed/patio2/600/400"
         }
       ],
-      "details": "<p>The <strong>contemporary sideboard</strong> is both stylish and functional, with ample storage space for tableware, electronics, or decor. Its sleek design makes it suitable for dining and living rooms alike.</p>",
-      "category": "storage",
+      "details": "<p>Enjoy the outdoors with this <strong>patio set</strong>, built with weather-resistant rattan and soft cushions.</p>",
+      "category": "outdoor",
       "rating": 4.7,
       "availableSizes": [
-        "Small",
-        "Large"
+        "4-Piece",
+        "6-Piece"
+      ],
+      "availableColors": [
+        "Gray",
+        "Brown"
+      ],
+      "sku": "OUTDOOR-0001",
+      "stock": 8,
+      "createdAt": "2025-06-18T23:30:00Z",
+      "updatedAt": "2025-09-15T07:00:00Z",
+      "discount": 17
+    },
+    {
+      "id": 14,
+      "title": "Minimalist Desk Lamp",
+      "description": "LED desk lamp with adjustable brightness.",
+      "thumbnail": "https://picsum.photos/seed/lamps1/400/300",
+      "price": 59.99,
+      "media": [
+        {
+          "order": 1,
+          "link": "https://picsum.photos/seed/lamps1/600/400"
+        },
+        {
+          "order": 2,
+          "link": "https://picsum.photos/seed/lamps2/600/400"
+        }
+      ],
+      "details": "<p>This <em>desk lamp</em> combines minimalist design with modern LED technology, offering adjustable brightness for work or study.</p>",
+      "category": "lighting",
+      "rating": 4.5,
+      "availableSizes": [
+        "Standard"
       ],
       "availableColors": [
         "White",
-        "Walnut",
-        "Gray"
-      ]
+        "Black"
+      ],
+      "sku": "LIGHT-0001",
+      "stock": 35,
+      "createdAt": "2025-03-03T12:10:00Z",
+      "updatedAt": "2025-09-13T11:45:00Z",
+      "discount": 13
     },
     {
-      "id": 10,
-      "title": "Plush Ottoman",
-      "description": "Comfortable plush ottoman that doubles as extra seating.",
-      "thumbnail": "https://images.pexels.com/photos/33417228/pexels-photo-33417228.jpeg",
-      "price": 159.99,
+      "id": 15,
+      "title": "Bean Bag Sofa",
+      "description": "Soft and cozy bean bag sofa for lounging.",
+      "thumbnail": "https://picsum.photos/seed/beanbag1/400/300",
+      "price": 119.99,
       "media": [
         {
           "order": 1,
-          "link": "https://images.pexels.com/photos/33417228/pexels-photo-33417228.jpeg"
+          "link": "https://picsum.photos/seed/beanbag1/600/400"
         },
         {
           "order": 2,
-          "link": "https://images.pexels.com/photos/33417229/pexels-photo-33417229.jpeg"
+          "link": "https://picsum.photos/seed/beanbag2/600/400"
         }
       ],
-      "details": "<p>The <em>plush ottoman</em> offers versatile use as a footrest, coffee table alternative, or extra seating. Upholstered with soft fabric, it adds comfort and style to any living area.</p>",
-      "category": "seating",
+      "details": "<p>Unwind with this <strong>bean bag sofa</strong>, designed for ultimate comfort in any room.</p>",
+      "category": "sofas",
       "rating": 4.3,
       "availableSizes": [
-        "Small",
-        "Medium"
+        "Standard"
       ],
       "availableColors": [
-        "Beige",
-        "Gray",
-        "Blue"
-      ]
+        "Blue",
+        "Red",
+        "Gray"
+      ],
+      "sku": "SOFA-0002",
+      "stock": 28,
+      "createdAt": "2025-07-01T14:00:00Z",
+      "updatedAt": "2025-09-17T16:20:00Z",
+      "discount": 7
     }
   ]
 }
