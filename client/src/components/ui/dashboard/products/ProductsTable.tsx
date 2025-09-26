@@ -1,15 +1,14 @@
 import { useAppDispatch } from "@/hooks/stateHooks";
-import type { Customer } from "@/pages/dashboard/customer-management";
-import { setEditingCustomerId, setEditingProductId, setShownCustomerID, setShownProductID } from "@/store/slices/dashboardSlice";
+import { setEditingProductId, setShownProductID } from "@/store/slices/dashboardSlice";
 import type { ProductCardProps } from "@/types/product";
 import { Button, ButtonGroup, IconButton, Image, Menu, Pagination, Portal, Table, Text } from "@chakra-ui/react";
 import { IoIosMore } from "react-icons/io";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
-import {  useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 type ProductsTableProps = {
   products: ProductCardProps[],
-  length:number
+  length: number
 }
 
 
@@ -47,7 +46,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ products, length }) => {
           </Table.Header>
 
           <Table.Body>
-            {products.slice((getPage() - 1) * 10, getPage() * 10).map((product:any) => (
+            {products.map((product: any) => (
               <Table.Row key={product.id}>
                 <Table.Cell><Image rounded={"md"} w={12} h={12} src={product.thumbnail} /> </Table.Cell>
                 <Table.Cell>{product.id}</Table.Cell>
@@ -66,10 +65,10 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ products, length }) => {
                       <Menu.Positioner>
                         <Menu.Content>
                           <Menu.Item asChild value='show-customer'>
-                            <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} onClick={()=> {dispatch(setShownProductID(product.id))} } >Show Customer</Text>
+                            <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} onClick={() => { dispatch(setShownProductID(product.id)) }} >Show Customer</Text>
                           </Menu.Item>
                           <Menu.Item asChild value='edit-customer'>
-                            <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} onClick={()=> {dispatch(setEditingProductId(product.id))} }>Edit Customer</Text>
+                            <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} onClick={() => { dispatch(setEditingProductId(product.id)) }}>Edit Customer</Text>
                           </Menu.Item>
 
                           <Menu.Item asChild value='delete-customer'>
@@ -87,7 +86,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ products, length }) => {
         </Table.Root>
 
       </Table.ScrollArea>
-      <Pagination.Root mt={2} colorPalette={"red"} count={length} pageSize={10} page={getPage()}>
+      <Pagination.Root mt={2} colorPalette={"red"} count={length} pageSize={5} page={getPage()}>
         <ButtonGroup variant="ghost" size="sm" wrap="wrap">
           <Pagination.PrevTrigger asChild>
             <IconButton onClick={() => { setPage(getPage() - 1) }}>

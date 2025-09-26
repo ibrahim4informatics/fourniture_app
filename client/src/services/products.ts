@@ -13,24 +13,24 @@ const getHomeProducts = async () => {
 }
 
 const getProducts = async (filters?: any) => {
-    try {
-        const page = filters?.page || 1;
-        const pageSize = 5;
 
-        const { data } = await axios.get("/data/products.json");
-        const products = data.products;
+    const page = filters?.page || 1;
+    const pageSize = 5;
 
-        const start = (page - 1) * pageSize;
-        const end = start + pageSize;
-        const paginatedProducts = products.slice(start, end);
+    const { data } = await axios.get("/data/products.json");
+    const products = data.products;
 
-        return {
-            total: products.length,
-            products: paginatedProducts
-        };
-    } catch (err: any) {
-        return err;
-    }
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize;
+    const paginatedProducts = products.slice(start, end);
+
+    console.log(paginatedProducts);
+
+    return {
+        total: products.length,
+        products: paginatedProducts
+    };
+
 }
 
 

@@ -5,8 +5,9 @@ export default (options: UseQueryOptions, filters?: any) => {
 
     return useQuery<any, Error>({
         ...options,
-        queryKey: ["products"],
-        queryFn: () => getProducts(filters)
+        queryKey: options.queryKey || ["products"],
+        queryFn: () => getProducts(filters),
+        
     })
 
 }
