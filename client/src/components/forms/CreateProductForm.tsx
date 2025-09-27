@@ -1,4 +1,4 @@
-import { Box, Field, Input, NativeSelect, Tabs, Textarea } from "@chakra-ui/react"
+import { Box, Button, Field, Image, Input, NativeSelect, Tabs, Text, Textarea } from "@chakra-ui/react"
 import { useForm, type UseFormReturn } from "react-hook-form";
 import {
     FiPackage, FiImage, FiDollarSign,
@@ -8,6 +8,8 @@ import z from "zod/v3";
 import RichTextEditor from "../ui/RichTextEditor";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCategories from "@/hooks/queries/useCategories";
+import { IoIosClose } from "react-icons/io";
+import { useState, type ChangeEvent } from "react";
 
 
 const productSchema = z.object({
@@ -20,18 +22,25 @@ const productSchema = z.object({
     description: z.string().min(5).max(5000),
     category_id: z.string().regex(/\d+/),
     product_type: z.enum(["simple", "variant"]),
+    medias: z.custom<FileList>().refine((file) => file && file.length > 0, { message: "No File Selected" })
 
 
 })
 
 type CreateProductFormField = z.infer<typeof productSchema>;
 
-
-type GeneralTabContentProps = {
-
+interface BaseTabProps {
     createProductHookForm: UseFormReturn<CreateProductFormField>
+}
+
+interface GeneralTabContentProps extends BaseTabProps {
 
 }
+
+interface MediaTabProps extends BaseTabProps { }
+
+
+
 const GeneralTabContent: React.FC<GeneralTabContentProps> = ({ createProductHookForm: { register, control, watch, formState: { errors, isSubmitting } } }) => {
     const { data: categories, isLoading: isCategoriesLoading, error: categoriesFetchError } = useCategories();
     return (
@@ -78,19 +87,55 @@ const GeneralTabContent: React.FC<GeneralTabContentProps> = ({ createProductHook
 
 
 
+const MediaTabContent: React.FC<MediaTabProps> = ({ createProductHookForm: { register,watch } }) => {
+    const [previews, setPreviews] = useState<string[]>([]);
+
+    
+    return (
+        <Box w={"full"} px={8} py={4}>
+
+
+            {/* Image Preview */}
+
+
+            <Box w={"full"} mb={4}>
+                <Text fontSize={24} fontWeight={"bold"}>Images To Upload</Text>
+
+                <Box w={"full"} display={"flex"} my={6} alignItems={"center"} gap={3} flexWrap={"wrap"}>
+                    {watch("medias") && Array.from(watch("medias")).map(file => (
+                        <Box pos={"relative"} w={"100px"} rounded={"md"} h={"100px"}>
+                            <Image pos={"absolute"} top={0} left={0} shadow={"sm"} rounded={"md"} src={URL.createObjectURL(file)} w={"full"} h={"full"} />
+
+                        </Box>
+                    ))}
+                </Box>
+
+            </Box>
+
+            <Box pos={"relative"} border={"dashed 1px rgba(0,0,0,.4)"} p={6} rounded={"md"} display={"flex"} w={"full"} alignItems={"center"} flexDir={"column"} gap={3} justifyContent={"center"}>
+                <Text fontSize={18} >Upload Product Photos</Text>
+                <Text fontSize={14} color={"GrayText"} >you can drag and drop the files</Text>
+                <Input {...register("medias")} zIndex={200} opacity={0} type="file" multiple pos={"absolute"} top={0} left={0} h={"full"} />
+            </Box>
+        </Box>
+    )
+}
+
+
+
 
 const CreateProductForm = () => {
     const createProductHookForm = useForm({ resolver: zodResolver(productSchema) });
     // const { register, formState, control, watch } = createProductHookForm;
     const tabs = [
         { name: "General", icon: <FiPackage />, content: <GeneralTabContent createProductHookForm={createProductHookForm} /> },
-        { name: "Media", icon: <FiImage />, content: <h1>Comming Soon</h1> },
+        { name: "Media", icon: <FiImage />, content: <MediaTabContent createProductHookForm={createProductHookForm} /> },
         { name: "Pricing", icon: <FiDollarSign />, content: <h1>Comming Soon</h1> },
         { name: "Shipping", icon: <FiTruck />, content: <h1>Comming Soon</h1> },
         { name: "Advanced", icon: <FiSettings />, content: <h1>Comming Soon</h1> },
     ];
     return (
-        <Tabs.Root variant={"subtle"} lazyMount unmountOnExit defaultValue={"General"}  colorPalette={"red"} size={"sm"} my={4}>
+        <Tabs.Root variant={"subtle"} lazyMount unmountOnExit defaultValue={"General"} colorPalette={"red"} size={"sm"} my={4}>
             <Tabs.List bg={"white"} borderBottom={"solid 1px"} borderBottomColor={"gray.200"} pos={"sticky"} zIndex={100} top={0}>
                 {
                     tabs.map(
