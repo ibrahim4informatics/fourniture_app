@@ -1,8 +1,8 @@
 import { useAppDispatch } from "@/hooks/stateHooks";
 import { setEditingProductId, setShownProductID } from "@/store/slices/dashboardSlice";
 import type { ProductCardProps } from "@/types/product";
-import { Button, ButtonGroup, IconButton, Image, Menu, Pagination, Portal, Table, Text } from "@chakra-ui/react";
-import { IoIosMore } from "react-icons/io";
+import {  Button, ButtonGroup, FormatNumber, IconButton, Image, Menu, Pagination, Portal, Table, Text } from "@chakra-ui/react";
+import {  IoIosMore } from "react-icons/io";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import { useSearchParams } from "react-router-dom";
 
@@ -53,8 +53,8 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ products, length }) => {
                 <Table.Cell>{product.sku}</Table.Cell>
                 <Table.Cell>{product.title}</Table.Cell>
                 <Table.Cell>{product.stock}</Table.Cell>
-                <Table.Cell>{product.price}</Table.Cell>
-                <Table.Cell>{new Date(product.created_at).toDateString()}</Table.Cell>
+                <Table.Cell><Text color={"green.600"}><FormatNumber value={product.price} style="currency" currency="USD" /></Text></Table.Cell>
+                <Table.Cell>{new Date(product.createdAt).toDateString()}</Table.Cell>
                 <Table.Cell>
 
                   <Menu.Root>
@@ -64,15 +64,14 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ products, length }) => {
                     <Portal>
                       <Menu.Positioner>
                         <Menu.Content>
-                          <Menu.Item asChild value='show-customer'>
-                            <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} onClick={() => { dispatch(setShownProductID(product.id)) }} >Show Customer</Text>
+                          <Menu.Item asChild value='show'>
+                            <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} onClick={() => { dispatch(setShownProductID(product.id)) }} >Show</Text>
                           </Menu.Item>
-                          <Menu.Item asChild value='edit-customer'>
-                            <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} onClick={() => { dispatch(setEditingProductId(product.id)) }}>Edit Customer</Text>
+                          <Menu.Item asChild value='edit'>
+                            <Text color={"GrayText"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} onClick={() => { dispatch(setEditingProductId(product.id)) }}>Edit</Text>
                           </Menu.Item>
-
-                          <Menu.Item asChild value='delete-customer'>
-                            <Text color={"red.700"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} asChild><Button variant={"plain"} onClick={() => { console.log("delete customer id" + product.id) }}>Delete Customer</Button></Text>
+                          <Menu.Item asChild value='delete'>
+                            <Text color={"red.700"} cursor={"pointer"} textDecor={"underline"} _hover={{ color: "red.600" }} outline={"none"} onClick={() => { console.log("delete product id" + product.id) }}>Delete</Text>
                           </Menu.Item>
                         </Menu.Content>
                       </Menu.Positioner>
@@ -109,6 +108,8 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ products, length }) => {
           </Pagination.NextTrigger>
         </ButtonGroup>
       </Pagination.Root>
+
+
     </>
   )
 }

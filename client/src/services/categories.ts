@@ -1,19 +1,23 @@
 import axios from "@/config/axios";
 
+export type Category = {
+    id: number
+    name: string
+    thumbnail: string
+}
+
 const getCategories = async () => {
-    try {
 
-        await new Promise((res)=> setTimeout(res,600))
 
-        const { data } = await axios.get("/data/categories.json");
+    await new Promise((res) => setTimeout(res, 600))
 
-        return data.categories;
+    const { data } = await axios.get("/data/categories.json");
 
-    }
+    return data.categories as Category[];
 
-    catch (err) {
-        return err;
-    }
+
+
+
 }
 
 

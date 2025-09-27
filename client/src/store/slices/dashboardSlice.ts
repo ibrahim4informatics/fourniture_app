@@ -7,6 +7,7 @@ interface DashboardState {
     showProductFilters: boolean,
     productShownId: number | string | null,
     productEditingId: number | string | null,
+    showCreateProductForm: boolean
 
     // order management global state
     showOrderFilters: boolean,
@@ -33,6 +34,7 @@ const initialState: DashboardState = {
     showProductFilters: false,
     productEditingId: null,
     productShownId: null,
+    showCreateProductForm:false,
 
     showCategoryFilters: false,
     showOrderFilters: false,
@@ -73,6 +75,10 @@ const DashboardSlice = createSlice({
             state.productEditingId = payload
         },
 
+        toggleCreateProductForm: (state, { payload }: PayloadAction<"show" | "hide">) => {
+            state.showCreateProductForm = payload === 'show';
+        }
+
 
 
 
@@ -81,7 +87,7 @@ const DashboardSlice = createSlice({
 
 
 export const {
-    customersFilterToggler, setShownCustomerID, setEditingCustomerId, 
-    productFilterToggler, setShownProductID, setEditingProductId
+    customersFilterToggler, setShownCustomerID, setEditingCustomerId,
+    productFilterToggler, setShownProductID, setEditingProductId, toggleCreateProductForm
 } = DashboardSlice.actions;
 export default DashboardSlice.reducer;

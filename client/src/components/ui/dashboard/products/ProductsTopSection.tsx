@@ -1,10 +1,10 @@
 import { Box, Button, Input, InputGroup, Text } from "@chakra-ui/react";
 import { type ChangeEvent } from "react";
-import { IoIosSearch, IoIosSettings } from "react-icons/io";
+import { IoIosAdd, IoIosSearch, IoIosSettings } from "react-icons/io";
 import { useSearchParams } from "react-router-dom";
 import { AnimatePresence } from "motion/react";
 import { useDispatch } from "react-redux";
-import { productFilterToggler } from "@/store/slices/dashboardSlice";
+import { productFilterToggler, toggleCreateProductForm } from "@/store/slices/dashboardSlice";
 import { useAppSelector } from "@/hooks/stateHooks";
 import ProductsFilters from "./ProductsFilters";
 
@@ -37,6 +37,12 @@ const ProductsTopSection = () => {
                 <InputGroup flex={1} px={6} py={8} startElement={<IoIosSearch size={25} color='#a1a1aa' />} >
                     <Input onChange={handleChange} colorPalette={"red"} variant={"subtle"} placeholder='Search By Name.' value={searchParams.get("search") || ""} size={"lg"} rounded={"full"} />
                 </InputGroup>
+
+
+                <Button size={"lg"} colorPalette={"red"} onClick={() => { dispatch(toggleCreateProductForm("show")) }} variant={"solid"}>
+                    <IoIosAdd />
+                    New Product
+                </Button>
 
                 <Button size={"lg"} onClick={() => { dispatch(productFilterToggler("show")) }} variant={"subtle"}>
                     <IoIosSettings />

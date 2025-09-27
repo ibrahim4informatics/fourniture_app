@@ -24,7 +24,6 @@ const getProducts = async (filters?: any) => {
     const end = start + pageSize;
     const paginatedProducts = products.slice(start, end);
 
-    console.log(paginatedProducts);
 
     return {
         total: products.length,

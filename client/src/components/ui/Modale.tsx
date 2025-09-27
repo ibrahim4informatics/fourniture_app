@@ -18,7 +18,4 @@ const Modale: React.FC<Props> = React.forwardRef(({children, ...props}, ref) => 
   )
 })
 
-
-export const FramerModal = motion.create(Modale);
-
-export default Modale
+export default motion.create(Modale);
