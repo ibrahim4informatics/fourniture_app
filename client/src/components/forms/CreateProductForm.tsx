@@ -1,4 +1,4 @@
-import { Box, Button, Field, Image, Input, NativeSelect, Tabs, Text, Textarea } from "@chakra-ui/react"
+import { Box, Field, Image, Input, NativeSelect, Tabs, Text, Textarea } from "@chakra-ui/react"
 import { useForm, type UseFormReturn } from "react-hook-form";
 import {
     FiPackage, FiImage, FiDollarSign,
@@ -8,8 +8,6 @@ import z from "zod/v3";
 import RichTextEditor from "../ui/RichTextEditor";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCategories from "@/hooks/queries/useCategories";
-import { IoIosClose } from "react-icons/io";
-import { useState, type ChangeEvent } from "react";
 
 
 const productSchema = z.object({
@@ -88,7 +86,6 @@ const GeneralTabContent: React.FC<GeneralTabContentProps> = ({ createProductHook
 
 
 const MediaTabContent: React.FC<MediaTabProps> = ({ createProductHookForm: { register,watch } }) => {
-    const [previews, setPreviews] = useState<string[]>([]);
 
     
     return (
@@ -105,7 +102,6 @@ const MediaTabContent: React.FC<MediaTabProps> = ({ createProductHookForm: { reg
                     {watch("medias") && Array.from(watch("medias")).map(file => (
                         <Box pos={"relative"} w={"100px"} rounded={"md"} h={"100px"}>
                             <Image pos={"absolute"} top={0} left={0} shadow={"sm"} rounded={"md"} src={URL.createObjectURL(file)} w={"full"} h={"full"} />
-
                         </Box>
                     ))}
                 </Box>
