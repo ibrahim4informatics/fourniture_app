@@ -1,4 +1,4 @@
-import { Box, Button, Field, FormatNumber, Image, Input, InputGroup, NativeSelect, Span, Tabs, Text, Textarea } from "@chakra-ui/react"
+import { Box, Button, Field, FormatNumber, Image, Input, InputGroup, NativeSelect, Span, Table, Tabs, Text, Textarea } from "@chakra-ui/react"
 import { useFieldArray, useForm, type UseFormReturn } from "react-hook-form";
 import {
     FiPackage, FiImage, FiDollarSign,
@@ -35,6 +35,13 @@ const productSchema = z.object({
     sale_ammount: z.string().regex(/\d+/, { message: "Sale price should be digital number" }).refine(value => +value >= 0 && +value <= 100, { message: "The sold ammount shoud be between 0 and 100" }),
     aviable_sale_from: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/, { message: "invalid date format" }),
     aviable_sale_to: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/, { message: "invalid date format" }),
+    product_variants: z.array(
+        z.object({
+            attributes: z.record(z.string(), z.string()),
+            stock: z.number(),
+            variant_price: z.number()
+        })
+    )
 
 
 }).superRefine(({ product_type, product_attributes }, ctx) => {
@@ -199,7 +206,12 @@ const MediaTabContent: React.FC<MediaTabProps> = ({ createProductHookForm: { reg
 }
 
 
-const PricingTabContent: React.FC<PricingTabContentProps> = ({ createProductHookForm: { register, formState: { isSubmitting, errors, }, watch } }) => {
+const PricingTabContent: React.FC<PricingTabContentProps> = ({ createProductHookForm: { register, control, formState: { isSubmitting, errors, }, watch } }) => {
+    const isProductVariant = watch("product_type") === "variant";
+    const productAttributes = watch("product_attributes")?.map(attr => ({ ...attr, values: attr.values.split(",") })) || [];
+    const { append, fields, remove } = useFieldArray({ control, name: "product_variants" });
+
+
     return (
 
 
@@ -232,7 +244,7 @@ const PricingTabContent: React.FC<PricingTabContentProps> = ({ createProductHook
                 </Text>
 
             }
-            {watch("sale_ammount") && <Box mt={4} display={"flex"} alignItems={"center"} gap={4}>
+            {watch("sale_ammount") && +watch("sale_ammount") > 0 && < Box mt={4} display={"flex"} alignItems={"center"} gap={4}>
                 <Field.Root flex={1} required disabled={isSubmitting} invalid={!!errors.aviable_sale_from?.message} >
                     <Field.Label>Sold Aviable From <Field.RequiredIndicator /></Field.Label>
                     <Input type="date" {...register("aviable_sale_from")} />
@@ -246,8 +258,87 @@ const PricingTabContent: React.FC<PricingTabContentProps> = ({ createProductHook
             </Box>}
 
 
+            {/* 
+                ([{name:colors, vlues:"red,green,blue"}, {name:size, values:"s,m,l"}])
 
-        </Box>
+
+            
+            */}
+            {isProductVariant && productAttributes?.length > 0 && (
+                <Box mt={4} py={2} borderTop={"solid 1px rgba(0,0,0,.09)"}>
+
+                    <Box w={"full"} display={"flex"} alignItems={"center"} justifyContent={"space-between"} py={3}>
+                        <Text fontWeight={"bold"} fontSize={18}>Product Variants</Text>
+                        <Button colorPalette={"green"} onClick={() => { append({ attributes: {}, stock: 0, variant_price: 0 }) }}>
+                            <IoIosAdd />
+                            Add Variant
+
+                        </Button>
+                    </Box>
+
+                    <Table.ScrollArea>
+                        <Table.Root>
+                            <Table.Header>
+                                <Table.Row>
+                                    {productAttributes.map((attribute, index) => <Table.ColumnHeader key={index}>{attribute.name}</Table.ColumnHeader>)}
+                                    <Table.ColumnHeader>Stock</Table.ColumnHeader>
+                                    <Table.ColumnHeader>Price</Table.ColumnHeader>
+                                    <Table.ColumnHeader>Action</Table.ColumnHeader>
+                                </Table.Row>
+                            </Table.Header>
+
+                            <Table.Body>
+                                 {
+
+                                    fields.map((field, index) => (
+                                        <Table.Row key={field.id}>
+                                            {
+                                                productAttributes.map((attribute, i) => (
+
+                                                    <Table.Cell key={i}>
+                                                        <NativeSelect.Root>
+                                                            <NativeSelect.Field placeholder="Select Option" {...register(`product_variants.${index}.attributes.${attribute.name}`)}>
+                                                                {
+                                                                    attribute.values.map((val, j) => <option key={j} value={val}>{val}</option>)
+                                                                }
+                                                            </NativeSelect.Field>
+                                                            <NativeSelect.Indicator />
+                                                        </NativeSelect.Root>
+                                                    </Table.Cell>
+
+                                                ))
+                                            }
+
+
+
+                                            <Table.Cell>
+
+                                                <Input type="number" {...register(`product_variants.${index}.stock`)} />
+                                            </Table.Cell>
+
+                                            <Table.Cell>
+                                                <Input type="number" {...register(`product_variants.${index}.variant_price`)} />
+                                            </Table.Cell>
+
+                                            <Table.Cell>
+
+                                                <Button colorPalette={"red"} variant={"subtle"} onClick={() => { remove(index) }}>
+                                                    <IoIosTrash />
+                                                </Button>
+                                            </Table.Cell>
+
+                                        </Table.Row>
+                                    ))
+                                } 
+                            </Table.Body>
+                        </Table.Root>
+                    </Table.ScrollArea>
+                </Box>
+            )}
+
+
+
+        </Box >
 
     )
 }
@@ -255,7 +346,7 @@ const PricingTabContent: React.FC<PricingTabContentProps> = ({ createProductHook
 
 
 const CreateProductForm = () => {
-    const createProductHookForm = useForm({ resolver: zodResolver(productSchema) });
+    const createProductHookForm = useForm({ resolver: zodResolver(productSchema), defaultValues: { product_variants: [] } });
     // const { register, formState, control, watch } = createProductHookForm;
     const tabs = [
         { name: "General", icon: <FiPackage />, content: <GeneralTabContent createProductHookForm={createProductHookForm} /> },
@@ -263,7 +354,7 @@ const CreateProductForm = () => {
         { name: "Pricing", icon: <FiDollarSign />, content: <PricingTabContent createProductHookForm={createProductHookForm} /> },
     ];
     return (
-        <Tabs.Root variant={"subtle"} lazyMount unmountOnExit defaultValue={"General"} colorPalette={"red"} size={"sm"} my={4}>
+        <Tabs.Root variant={"subtle"} lazyMount  defaultValue={"General"} colorPalette={"red"} size={"sm"} my={4}>
             <Tabs.List bg={"white"} borderBottom={"solid 1px"} borderBottomColor={"gray.200"} pos={"sticky"} zIndex={100} top={0}>
                 {
                     tabs.map(
