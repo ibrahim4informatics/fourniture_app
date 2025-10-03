@@ -1,381 +1,337 @@
-import { Box, Button, Field, FormatNumber, Image, Input, InputGroup, NativeSelect, Span, Table, Tabs, Text, Textarea } from "@chakra-ui/react"
-import { useFieldArray, useForm, type UseFormReturn } from "react-hook-form";
-import {
-    FiPackage, FiImage, FiDollarSign,
-} from "react-icons/fi";
-import z from "zod/v3";
-import RichTextEditor from "../ui/RichTextEditor";
+import React, { useEffect } from "react";
+import { useForm , useFieldArray } from "react-hook-form";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Tabs,
+  Button,
+  Input,
+  Field,
+  Textarea,
+  Box,
+  NativeSelect,
+  Text,
+  Image,
+  Span,
+} from "@chakra-ui/react";
+import { IoIosAdd, IoIosClose, IoIosSave, IoIosTrash } from "react-icons/io";
+import { FiPackage, FiImage, FiDollarSign } from "react-icons/fi";
+import RichTextEditor from "../ui/RichTextEditor";
 import useCategories from "@/hooks/queries/useCategories";
-import { IoIosAdd, IoIosTrash } from "react-icons/io";
+import { IoCloudUpload } from "react-icons/io5";
+
+
+const productAttributeSchema = z.object({
+  name: z.string().min(3).max(30),
+  values: z.string().min(1).regex(/^[a-zA-Z0-9]+(?:,[a-zA-Z0-9]+)*$/, { message: "the values must be seperated with (,)" }).transform(val => val.trim().split(","))
+})
 
 
 const productSchema = z.object({
-    //General Form Part
-    title: z.string().min(5).max(120),
-    sku: z.string(),
-    slug: z.string().regex(/^[a-z0-9]+(?:_[a-z0-9]+)*$/, {
-        message: "slug should match this pattern: word1_word2_(...)_wordN (letters/numbers only)"
-    }).optional(),
-    short_description: z.string().min(10).max(500),
-    description: z.string().min(5).max(5000),
-    category_id: z.string().regex(/\d+/),
-    product_type: z.enum(["simple", "variant"]),
-    product_attributes: z.array(z.object({
-        name: z.string().min(2).max(35),
-        values: z.string().refine(values => values.trim().split(",").map(value => value.trim()).length > 0, { message: "You need to enter one value at least" })
-    })).optional(),
+  // general informations
+  title: z.string().min(3).max(150),
+  sku: z.string().min(3).max(200).optional(),
+  short_description: z.string().min(3).max(500),
+  description: z.string().min(20, { message: "The description is too short" }).max(3000, { message: "make the description shorter" }),
+  category_id: z.string().regex(/\d+/, { message: "Category is not valid" }).transform(val => parseInt(val)),
+  slug: z.string().regex(/^[a-z0-9]+(?:_[a-z0-9]+)*$/, { message: "slug allow only _ and characters" }),
+  type: z.enum(["variant", "simple"]),
+  attributes: z.array(productAttributeSchema).optional(),
 
-    //Media Form Part
-    media: z.custom<FileList>().refine((file) => file && file.length > 0, { message: "No File Selected" }),
-    thumbnail: z.custom<FileList>(),
+  // media informations
+  thumbnail: z.instanceof(FileList).transform(file => file.length > 0 && Array.from(file)[0]).optional(),
+  medias: z.instanceof(FileList).optional().transform(files => files && Array.from(files)),
+}).superRefine(({ type, attributes, thumbnail, medias }, ctx) => {
 
-    // Pricing Product
-    base_price: z.string().regex(/\d+/, { message: "Price should be digital number" }),
-    sale_ammount: z.string().regex(/\d+/, { message: "Sale price should be digital number" }).refine(value => +value >= 0 && +value <= 100, { message: "The sold ammount shoud be between 0 and 100" }),
-    aviable_sale_from: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/, { message: "invalid date format" }),
-    aviable_sale_to: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/, { message: "invalid date format" }),
-    product_variants: z.array(
-        z.object({
-            attributes: z.record(z.string(), z.string()),
-            stock: z.number(),
-            variant_price: z.number()
-        })
-    )
+  if (type === "variant" && (!attributes || attributes.length < 1)) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["attributes"],
+      message: "A variant product should have one attribute at least"
+    });
+  }
 
+  if (!thumbnail) {
+    ctx.addIssue({
+      path: ["thumbnail"],
+      code: "custom",
+      message: "The thumbnail is required"
+    })
+  }
 
-}).superRefine(({ product_type, product_attributes }, ctx) => {
-    if (product_type === "variant" && (!product_attributes || product_attributes.length < 1)) {
-        ctx.addIssue({
-            path: ["product_attributes"],
-            code: z.ZodIssueCode.custom,
-            message: "Variants are requirered when the product type is variant"
-        })
-    }
+  if(!medias || medias.length < 1){
+    ctx.addIssue({
+      path:["medias"],
+      code:"custom",
+      message:"images of product is required"
+    })
+  }
 })
 
-type CreateProductFormField = z.infer<typeof productSchema>;
 
 
+type ProductFormValues = z.infer<typeof productSchema>;
 
-interface BaseTabProps {
-    createProductHookForm: UseFormReturn<CreateProductFormField>
-}
+const CreateProductForm: React.FC = () => {
+  const form = useForm({
+    resolver: zodResolver(productSchema),
+  })
 
-interface GeneralTabContentProps extends BaseTabProps {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    control,
+    formState: { errors, isSubmitting },
+    watch,
+  } = form;
 
-}
-interface MediaTabProps extends BaseTabProps { }
-interface PricingTabContentProps extends BaseTabProps { }
+  const { fields: attributeFields, append: appendAttributeField, remove: removeAttributeField } = useFieldArray({
+    control,
+    name: "attributes",
+  });
+
+  const { data: categories, isLoading: isCategoriesLoading, error: categoriesFetchError } = useCategories();
+  // track the field state of important parts i need for ui logic
+  const title = watch("title");
+  const thumbnail = watch("thumbnail");
+  const productType = watch("type");
+  const medias = watch("medias");
+
+  // make auto slug generation based on title
+  useEffect(() => {
+    if (title && title.trim().length > 0) {
+      setValue("slug", title.trim().toLowerCase().replaceAll(" ", "_"))
+    }
+  }, [title])
 
 
-const GeneralTabContent: React.FC<GeneralTabContentProps> = ({ createProductHookForm: { register, control, watch, formState: { errors, isSubmitting } } }) => {
-    const { data: categories, isLoading: isCategoriesLoading, error: categoriesFetchError } = useCategories();
-    const { fields, append, remove } = useFieldArray(
-        {
-            control,
-            name: "product_attributes"
-        }
-    );
-    return (
-        <Box w={"full"}>
-            <Field.Root my={2} invalid={errors.title?.message ? true : false} disabled={isSubmitting} required>
-                <Field.Label>Product Name <Field.RequiredIndicator /></Field.Label>
-                <Input type="text" {...register("title")} />
-            </Field.Root>
-            <Field.Root my={2} invalid={errors.title?.message ? true : false} disabled={isSubmitting} >
-                <Field.Label>Slug</Field.Label>
-                <Input placeholder={watch("title") ? watch("title").trim().toLowerCase().replaceAll(" ", "_") : "Short link name, lowercase with _ (e.g. modern_chair)"} type="text" {...register("slug")} />
-            </Field.Root>
-            <Field.Root my={2} invalid={errors.title?.message ? true : false} disabled={isSubmitting} required>
-                <Field.Label>Short Description <Field.RequiredIndicator /></Field.Label>
-                <Textarea  {...register("short_description")} />
-            </Field.Root>
-            <RichTextEditor control={control} name="description" label="Description" required />
-            <Field.Root my={2} required disabled={isSubmitting || isCategoriesLoading} invalid={(categoriesFetchError?.message || errors.category_id?.message) ? true : false}>
-                <Field.Label>Category <Field.RequiredIndicator /> </Field.Label>
-                <NativeSelect.Root>
-                    <NativeSelect.Field {...register("category_id")} placeholder="Select Option">
-                        {categories && categories.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
-                    </NativeSelect.Field>
-                    <NativeSelect.Indicator />
-                </NativeSelect.Root>
-            </Field.Root>
-            <Field.Root my={2} required disabled={isSubmitting} invalid={errors.product_type?.message ? true : false}>
-                <Field.Label>Product Type <Field.RequiredIndicator /> </Field.Label>
-                <NativeSelect.Root>
-                    <NativeSelect.Field {...register("product_type")} placeholder="Select Option">
+  useEffect(() => {
+    console.log(errors)
+  },
+    [errors])
 
-                        <option value="simple">Simple</option>
-                        <option value="variant">Variant</option>
-                    </NativeSelect.Field>
-                    <NativeSelect.Indicator />
-                </NativeSelect.Root>
 
-            </Field.Root>
+  const onSubmit = (data: ProductFormValues) => {
+    console.log("Submitted ✅", data);
+  };
 
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Tabs.Root defaultValue="General" variant="enclosed" size="md" my={4}>
+        <Tabs.List>
+          <Tabs.Trigger value="General">
+            <FiPackage /> General
+          </Tabs.Trigger>
+          <Tabs.Trigger value="Pricing">
+            <FiDollarSign /> Pricing
+          </Tabs.Trigger>
+          <Tabs.Trigger value="Media">
+            <FiImage /> Media
+          </Tabs.Trigger>
+        </Tabs.List>
+
+        {/* General Tab */}
+        <Tabs.Content value="General">
+
+          <Field.Root mb={4} required disabled={isSubmitting} invalid={!!errors.title?.message}>
+            <Field.Label>Product Name <Field.RequiredIndicator /></Field.Label>
+            <Input {...register("title")} />
+            <Field.ErrorText>{errors.title?.message}</Field.ErrorText>
+          </Field.Root>
+
+
+          <Field.Root mb={4} disabled={isSubmitting} invalid={!!errors.sku?.message}>
+            <Field.Label>Sku</Field.Label>
+            <Input {...register("sku")} />
+            <Field.ErrorText>{errors.sku?.message}</Field.ErrorText>
+            <Field.HelperText>Sku is unique short text to identify product</Field.HelperText>
+          </Field.Root>
+
+
+          <Field.Root required mb={4} disabled={isSubmitting} invalid={!!errors.slug?.message}>
+            <Field.Label>Slug <Field.RequiredIndicator /> </Field.Label>
+            <Input {...register("slug")} />
+            <Field.ErrorText>{errors.slug?.message}</Field.ErrorText>
+            <Field.HelperText>Slug is unique text used in url of the website</Field.HelperText>
+          </Field.Root>
+
+
+          <Field.Root required mb={4} disabled={isSubmitting} invalid={!!errors.short_description?.message}>
+            <Field.Label>Short Description <Field.RequiredIndicator /> </Field.Label>
+            <Textarea {...register("short_description")} />
+            <Field.ErrorText>{errors.short_description?.message}</Field.ErrorText>
+            <Field.HelperText>The short description should be atrractive</Field.HelperText>
+          </Field.Root>
+          <RichTextEditor control={control} label="Description" name="description" required />
+
+
+          <Field.Root required mb={4} disabled={isSubmitting || isCategoriesLoading} invalid={!!errors.category_id?.message}>
+            <Field.Label>Category<Field.RequiredIndicator /> </Field.Label>
             {
-                watch("product_type") && watch("product_type") === "variant" && (
-                    <Box w={"full"} mt={3}>
+              !categoriesFetchError && (
+                <NativeSelect.Root>
+                  <NativeSelect.Field placeholder="Select Option" {...register("category_id")}>
 
-                        <Text fontSize={18} fontWeight={"bold"}>Product Attributes</Text>
-
-                        {
-                            fields.map((field, index) => (
-                                <Box key={field.id} my={2} rounded={"md"} display={"flex"} alignItems={"center"} gap={2}>
-                                    <Field.Root invalid={errors.product_attributes && errors.product_attributes[index]?.name?.message ? true : false} required >
-                                        <Input placeholder="Attribute name e.g:colors,sizes..." {...register(`product_attributes.${index}.name`)} />
-                                        <Field.ErrorText>
-
-                                            {errors.product_attributes && errors.product_attributes[index]?.name?.message}
-                                        </Field.ErrorText>
-                                    </Field.Root>
+                    {categories && categories.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
 
 
-                                    <Field.Root invalid={errors.product_attributes && errors.product_attributes[index]?.values?.message ? true : false} required >
-                                        <Input placeholder="Attribute values e.g:red,green..." {...register(`product_attributes.${index}.values`)} />
-                                        <Field.ErrorText>
-
-                                            {errors.product_attributes && errors.product_attributes[index]?.values?.message}
-                                        </Field.ErrorText>
-                                    </Field.Root>
-
-                                    <Button colorPalette={"red"} variant={"subtle"} onClick={() => { remove(index) }}><IoIosTrash /></Button>
-                                </Box>
-                            ))
-                        }
-
-                        <Button my={2} colorPalette={"green"} onClick={() => append({ name: "", values: "" })}><IoIosAdd /> Add Variant</Button>
-
-                    </Box>
-                )
+                  </NativeSelect.Field>
+                  <NativeSelect.Indicator />
+                </NativeSelect.Root>
+              )
             }
-
-        </Box>
-    )
-}
+            <Field.ErrorText>{errors.category_id?.message}</Field.ErrorText>
+          </Field.Root>
 
 
 
 
-const MediaTabContent: React.FC<MediaTabProps> = ({ createProductHookForm: { register, watch, formState: { errors } } }) => {
+
+          <Field.Root required mb={4} disabled={isSubmitting || isCategoriesLoading} invalid={!!errors.category_id?.message}>
+            <Field.Label>Product Type<Field.RequiredIndicator /> </Field.Label>
+
+            <NativeSelect.Root>
+              <NativeSelect.Field placeholder="Select Option" {...register("type")}>
+
+                <option value={"simple"}>Simple</option>
+                <option value={"variant"}>Variant</option>
 
 
-    return (
-        <Box w={"full"} px={8} py={4}>
-            {/* Thumbnail Upload */}
-            <Box mb={4}>
+              </NativeSelect.Field>
+              <NativeSelect.Indicator />
+            </NativeSelect.Root>
 
-                <Text fontSize={18} fontWeight={"bold"}>Select Thumbnail For Your Product</Text>
-                <Text fontSize={14} color={"GrayText"} mb={3}>The Thumbnail is what you see on the product card it sould be attractive!</Text>
+            <Field.ErrorText>{errors.type?.message}</Field.ErrorText>
+          </Field.Root>
 
-                <Box display={"flex"} gap={4} flexDir={"column"} mt={2}>
 
-                    {watch("thumbnail") && <Image src={URL.createObjectURL(watch("thumbnail").item(0)!)} alt="thumnail" w={200} h={200} rounded={"md"} />}
-                    <Button pos={"relative"} colorPalette={"green"} w={200}>
-                        {watch("thumbnail") ? "Change Thumbnail" : "Upload Thumbnail"}
-                        <Input type="file" pos={"absolute"} top={0} left={0} w={"full"} h={"full"} opacity={0} {...register("thumbnail")} />
-                    </Button>
+          {
+            productType === "variant" && (
+              <Box w={"full"} my={4}>
+                <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"} w={"full"}>
+                  <Text fontWeight={"bold"}>Attributes</Text>
+                  <Button colorPalette={"green"} onClick={() => { appendAttributeField({ name: "", values: "" }) }}><IoIosAdd /> Add Attribute</Button>
                 </Box>
-            </Box>
+                {errors.attributes?.root?.message && <Text my={2} fontSize={12} color={"red.600"}>{errors.attributes.root.message}</Text>}
+                {attributeFields.map((field, index) => (
+                  <Box borderBottom={"solid 1px"} borderBottomColor={"gray.200"} pb={4} key={field.id} w={"full"} display={"flex"} my={4} alignItems={"baseline"} gap={4}>
+                    <Field.Root required invalid={errors.attributes && !!(errors.attributes[index]?.name?.message)}>
+
+                      <Field.Label>Name <Field.RequiredIndicator /></Field.Label>
+                      <Input {...register(`attributes.${index}.name`)} />
+                      <Field.ErrorText>{errors.attributes && errors.attributes[index]?.name?.message}</Field.ErrorText>
+                      <Field.HelperText>Here the name of attribute like color,size,...etc</Field.HelperText>
+
+                    </Field.Root>
 
 
+                    <Field.Root required invalid={errors.attributes && !!(errors.attributes[index]?.values?.message)}>
 
-            {/* Image Preview */}
-            <Box w={"full"} mb={4}>
-                <Text fontSize={24} fontWeight={"bold"}>Images To Upload</Text>
+                      <Field.Label>Values <Field.RequiredIndicator /></Field.Label>
+                      <Input {...register(`attributes.${index}.values`)} />
+                      <Field.ErrorText>{errors.attributes && errors.attributes[index]?.values?.message}</Field.ErrorText>
+                      <Field.HelperText>The attribute values in comma seperated values eg:red,blue,brown,...</Field.HelperText>
 
-                <Box w={"full"} display={"flex"} my={6} alignItems={"center"} gap={3} flexWrap={"wrap"}>
-                    {watch("media") && Array.from(watch("media")).map(file => (
-                        <Box pos={"relative"} w={"100px"} rounded={"md"} h={"100px"}>
-                            <Image pos={"absolute"} top={0} left={0} shadow={"sm"} rounded={"md"} src={URL.createObjectURL(file)} w={"full"} h={"full"} />
-                        </Box>
-                    ))}
-                </Box>
+                    </Field.Root>
 
-            </Box>
-            {/* Product Images Upload */}
-            <Box pos={"relative"} border={"dashed 1px rgba(0,0,0,.4)"} p={6} rounded={"md"} display={"flex"} w={"full"} alignItems={"center"} flexDir={"column"} gap={3} justifyContent={"center"}>
-                <Text fontSize={18} >Upload Product Photos</Text>
-                <Text fontSize={14} color={"GrayText"} >you can drag and drop the files</Text>
-                <Input {...register("media")} zIndex={200} opacity={0} type="file" multiple pos={"absolute"} top={0} left={0} h={"full"} />
-                {errors.media?.message && <Text my={3} color={"red.600"}>{errors.media?.message}</Text>}
-            </Box>
-        </Box>
-    )
-}
-
-
-const PricingTabContent: React.FC<PricingTabContentProps> = ({ createProductHookForm: { register, control, formState: { isSubmitting, errors, }, watch } }) => {
-    const isProductVariant = watch("product_type") === "variant";
-    const productAttributes = watch("product_attributes")?.map(attr => ({ ...attr, values: attr.values.split(",") })) || [];
-    const { append, fields, remove } = useFieldArray({ control, name: "product_variants" });
-
-
-    return (
-
-
-        <Box w={"full"} px={8} py={4}>
-
-            <Text fontSize={18} fontWeight={"bold"}>Product Pricing</Text>
-
-            <Box mt={4} display={"flex"} alignItems={"center"} gap={4}>
-                <Field.Root flex={1} required disabled={isSubmitting} invalid={!!errors.base_price?.message} >
-
-                    <Field.Label>Base Price <Field.RequiredIndicator /></Field.Label>
-                    <InputGroup startElement="$">
-                        <Input type="number" {...register("base_price")} />
-                    </InputGroup>
-                    <Field.ErrorText>{errors.base_price?.message}</Field.ErrorText>
-                </Field.Root>
-                <Field.Root flex={1} required disabled={isSubmitting} invalid={!!errors.base_price?.message} >
-
-                    <Field.Label>Sale Ammount <Field.RequiredIndicator /></Field.Label>
-                    <InputGroup startElement="%">
-                        <Input min={0} max={100} type="number" {...register("sale_ammount")} />
-                    </InputGroup>
-                    <Field.ErrorText>{errors.sale_ammount?.message}</Field.ErrorText>
-                </Field.Root>
-            </Box>
-            {watch("base_price") &&
-                <Text fontSize={14} mt={2} color={"GrayText"}>
-                    The Sale Price Now is:
-                    <Span color={"green.500"} fontWeight={"bold"} ml={2}><FormatNumber value={+watch("base_price") - (+watch("sale_ammount") || 0) * +watch("base_price") / 100} style="currency" currency="USD" /></Span>
-                </Text>
-
-            }
-            {watch("sale_ammount") && +watch("sale_ammount") > 0 && < Box mt={4} display={"flex"} alignItems={"center"} gap={4}>
-                <Field.Root flex={1} required disabled={isSubmitting} invalid={!!errors.aviable_sale_from?.message} >
-                    <Field.Label>Sold Aviable From <Field.RequiredIndicator /></Field.Label>
-                    <Input type="date" {...register("aviable_sale_from")} />
-                    <Field.ErrorText>{errors.aviable_sale_from?.message}</Field.ErrorText>
-                </Field.Root>
-                <Field.Root flex={1} required disabled={isSubmitting} invalid={!!errors.aviable_sale_to?.message} >
-                    <Field.Label>Sold Aviable To<Field.RequiredIndicator /></Field.Label>
-                    <Input type="date" {...register("aviable_sale_to")} />
-                    <Field.ErrorText>{errors.aviable_sale_to?.message}</Field.ErrorText>
-                </Field.Root>
-            </Box>}
-
-
-            {/* 
-                ([{name:colors, vlues:"red,green,blue"}, {name:size, values:"s,m,l"}])
-
-
-            
-            */}
-            {isProductVariant && productAttributes?.length > 0 && (
-                <Box mt={4} py={2} borderTop={"solid 1px rgba(0,0,0,.09)"}>
-
-                    <Box w={"full"} display={"flex"} alignItems={"center"} justifyContent={"space-between"} py={3}>
-                        <Text fontWeight={"bold"} fontSize={18}>Product Variants</Text>
-                        <Button colorPalette={"green"} onClick={() => { append({ attributes: {}, stock: 0, variant_price: 0 }) }}>
-                            <IoIosAdd />
-                            Add Variant
-
-                        </Button>
-                    </Box>
-
-                    <Table.ScrollArea>
-                        <Table.Root>
-                            <Table.Header>
-                                <Table.Row>
-                                    {productAttributes.map((attribute, index) => <Table.ColumnHeader key={index}>{attribute.name}</Table.ColumnHeader>)}
-                                    <Table.ColumnHeader>Stock</Table.ColumnHeader>
-                                    <Table.ColumnHeader>Price</Table.ColumnHeader>
-                                    <Table.ColumnHeader>Action</Table.ColumnHeader>
-                                </Table.Row>
-                            </Table.Header>
-
-                            <Table.Body>
-                                 {
-
-                                    fields.map((field, index) => (
-                                        <Table.Row key={field.id}>
-                                            {
-                                                productAttributes.map((attribute, i) => (
-
-                                                    <Table.Cell key={i}>
-                                                        <NativeSelect.Root>
-                                                            <NativeSelect.Field placeholder="Select Option" {...register(`product_variants.${index}.attributes.${attribute.name}`)}>
-                                                                {
-                                                                    attribute.values.map((val, j) => <option key={j} value={val}>{val}</option>)
-                                                                }
-                                                            </NativeSelect.Field>
-                                                            <NativeSelect.Indicator />
-                                                        </NativeSelect.Root>
-                                                    </Table.Cell>
-
-                                                ))
-                                            }
-
-
-
-                                            <Table.Cell>
-
-                                                <Input type="number" {...register(`product_variants.${index}.stock`)} />
-                                            </Table.Cell>
-
-                                            <Table.Cell>
-                                                <Input type="number" {...register(`product_variants.${index}.variant_price`)} />
-                                            </Table.Cell>
-
-                                            <Table.Cell>
-
-                                                <Button colorPalette={"red"} variant={"subtle"} onClick={() => { remove(index) }}>
-                                                    <IoIosTrash />
-                                                </Button>
-                                            </Table.Cell>
-
-                                        </Table.Row>
-                                    ))
-                                } 
-                            </Table.Body>
-                        </Table.Root>
-                    </Table.ScrollArea>
-                </Box>
-            )}
-
-
-
-        </Box >
-
-    )
-}
-
-
-
-const CreateProductForm = () => {
-    const createProductHookForm = useForm({ resolver: zodResolver(productSchema), defaultValues: { product_variants: [] } });
-    // const { register, formState, control, watch } = createProductHookForm;
-    const tabs = [
-        { name: "General", icon: <FiPackage />, content: <GeneralTabContent createProductHookForm={createProductHookForm} /> },
-        { name: "Media", icon: <FiImage />, content: <MediaTabContent createProductHookForm={createProductHookForm} /> },
-        { name: "Pricing", icon: <FiDollarSign />, content: <PricingTabContent createProductHookForm={createProductHookForm} /> },
-    ];
-    return (
-        <Tabs.Root variant={"subtle"} lazyMount  defaultValue={"General"} colorPalette={"red"} size={"sm"} my={4}>
-            <Tabs.List bg={"white"} borderBottom={"solid 1px"} borderBottomColor={"gray.200"} pos={"sticky"} zIndex={100} top={0}>
-                {
-                    tabs.map(
-                        tab =>
-                            <Tabs.Trigger value={tab.name} key={tab.name} color={"red.500"}>
-                                {tab.icon}
-                                {tab.name}
-                            </Tabs.Trigger>
-                    )
+                    <Button colorPalette={"red"} onClick={() => { removeAttributeField(index) }} ><IoIosTrash /></Button>
+                  </Box>
+                ))
                 }
 
-            </Tabs.List>
-            {tabs.map(tab => <Tabs.Content key={tab.name} value={tab.name}>{tab.content}</Tabs.Content>)}
-
-
-        </Tabs.Root>
-    )
-}
+              </Box>
+            )
+          }
 
 
 
+        </Tabs.Content>
+
+        {/* Media Tab */}
+        <Tabs.Content value="Media">
+          <Text fontSize={22} mb={4} fontWeight={"bold"}>
+            Product Media Data
+          </Text>
+
+          {/* Thumbnail Upload and Preview section */}
+          <Box w={"full"} my={4}>
+            <Text fontWeight={"bold"}>Thumbnail<Span color={"red.600"}>*</Span></Text>
+            {errors.thumbnail?.message && <Text color={"red.600"} fontSize={14} px={2} textAlign={"center"} my={2}>{errors.thumbnail.message}</Text>}
+            <Box pos={"relative"} my={4} rounded={"md"} w={200} h={200} border={thumbnail ? "none" : "dashed 1px"} borderColor={"gray.300"} color={"gray.300"} display={"flex"} alignItems={"center"} justifyContent={"center"} flexDir={"column"}>
+              {
+                (!thumbnail || thumbnail.length < 1) ?
+                  (
+                    <>
+
+                      <IoCloudUpload size={40} />
+                      <Text px={2} textAlign={"center"} my={2}>Upload thumbnail to see it</Text>
+                    </>
+                  ) :
+                  (
+                    <>
 
 
-export default CreateProductForm
+                      <Image rounded={"md"} w={"full"} h={"full"} src={URL.createObjectURL(thumbnail.item(0)!)} alt="thumbnail preview" />
+                      <Button onClick={() => { setValue("thumbnail", undefined) }} pos={"absolute"} top={0} right={0} colorPalette={"red"} variant={"surface"}><IoIosClose /></Button>
+
+                    </>
+                  )
+              }
+            </Box>
+            <Button colorPalette={"green"}>
+              {thumbnail ? "Change Thumbnail" : "Choose Thumbnail"}
+              <Input type="file" cursor={"pointer"} pos={"absolute"} top={0} left={0} opacity={0} {...register("thumbnail")} />
+            </Button>
+          </Box>
+
+          {/* Product Gallery Section */}
+
+          <Box w={"full"} my={4}>
+            <Text fontWeight={"bold"}>Gallery<Span color={"red.600"}>*</Span></Text>
+
+            {errors.medias?.message && <Text color={"red.600"} fontSize={14} px={2} textAlign={"center"} my={2}>{errors.medias.message}</Text>}
+
+            <Box w={"full"} my={4} display={"flex"} alignItems={"center"} gap={3} flexWrap={"wrap"}>
+              {medias && Array.from(medias).map((media, index) => (
+                <Box pos={"relative"} w={150} h={150} rounded={"md"} key={index}>
+                  <Image  w={"full"} h={"full"} rounded={"md"} src={URL.createObjectURL(media)} />
+
+                  <Button pos={"absolute"} colorPalette={"red"} variant={"surface"} top={0} right={0} onClick={() => {
+                    const newMediaArray = Array.from(medias).filter((_media, j) => j !== index);
+                    const dataTransfer = new DataTransfer();
+                    newMediaArray.forEach(file => dataTransfer.items.add(file));
+                    setValue("medias", dataTransfer.files)
+                  }}><IoIosClose /></Button>
+                </Box>
+              ))
+
+
+              }
+            </Box>
+
+            <Box pos={"relative"} w={"full"} p={12} border={"dashed 1px"} borderColor={"gray.300"} color={"gray.400"} my={2} rounded={"md"} display={"flex"} flexDir={"column"} alignItems={"center"} justifyContent={"center"} gap={4}>
+              <IoCloudUpload size={60} />
+              <Text>Upload different images for the product</Text>
+              <Text>You can drag the images inside the box</Text>
+              <Input type="file" multiple pos={"absolute"} w={"full"} h={"full"} cursor={"pointer"} opacity={0} {...register("medias")} />
+            </Box>
+
+
+          </Box>
+        </Tabs.Content>
+
+        {/* Pricing Tab */}
+        <Tabs.Content value="Pricing">
+          Pricing
+        </Tabs.Content>
+      </Tabs.Root>
+
+      <Button my={4} colorPalette={"green"} onClick={handleSubmit(onSubmit)}>
+        <IoIosSave /> Create Product
+      </Button>
+    </form>
+  );
+};
+
+export default CreateProductForm;

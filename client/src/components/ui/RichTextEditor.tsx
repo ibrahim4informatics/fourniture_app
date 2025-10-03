@@ -32,7 +32,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ name, control, label, r
         <Controller
             name={name}
             control={control}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
+            render={({ field: { onChange, value }, fieldState:{invalid,error} }) => (
                 <Field.Root invalid={!!error} my={2} required={required}>
 
                     {label && <Field.Label>{label}<Field.RequiredIndicator /></Field.Label>}
@@ -40,7 +40,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ name, control, label, r
                     <Box
                         border="1px solid"
                         w={"full"}
-                        borderColor={error ? "red.500" : "gray.200"}
+                        borderColor={invalid ? "red.500" : "gray.200"}
                         borderRadius="md"
                         _focusWithin={{ borderColor: "gray.300", boxShadow: "0 0 0 1px rgba(0,0,0,.4)" }}
                     >
