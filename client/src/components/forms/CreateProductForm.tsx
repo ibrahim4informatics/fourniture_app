@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useForm , useFieldArray } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -13,12 +13,15 @@ import {
   Text,
   Image,
   Span,
+  InputGroup,
 } from "@chakra-ui/react";
 import { IoIosAdd, IoIosClose, IoIosSave, IoIosTrash } from "react-icons/io";
 import { FiPackage, FiImage, FiDollarSign } from "react-icons/fi";
 import RichTextEditor from "../ui/RichTextEditor";
 import useCategories from "@/hooks/queries/useCategories";
 import { IoCloudUpload } from "react-icons/io5";
+import { Switch } from "../ui/switch";
+import {  BiSolidOffer } from "react-icons/bi";
 
 
 const productAttributeSchema = z.object({
@@ -26,6 +29,21 @@ const productAttributeSchema = z.object({
   values: z.string().min(1).regex(/^[a-zA-Z0-9]+(?:,[a-zA-Z0-9]+)*$/, { message: "the values must be seperated with (,)" }).transform(val => val.trim().split(","))
 })
 
+const productSaleSchema = z.object({
+  name: z.string().min(3).max(100),
+  ammount: z.string().
+    regex(/\d+/, { message: "The ammount need to be a number" }).
+    refine(value => parseInt(value) >= 0 && parseInt(value) <= 100, { message: "The sale ammount shoud be between 0-100" }).
+    transform(val => parseInt(val) / 100),
+  from: z.iso.date(),
+  to: z.iso.date(),
+})
+
+const productVariantSchema = z.object({
+  combinaison: z.record(z.string(), z.string()),
+  stock: z.string().regex(/\d+/).transform(val => parseInt(val)),
+  price: z.string().regex(/^\d+(\.\d+)?$/, { message: "price should be number" }).transform(val => parseFloat(val)),
+})
 
 const productSchema = z.object({
   // general informations
@@ -38,10 +56,18 @@ const productSchema = z.object({
   type: z.enum(["variant", "simple"]),
   attributes: z.array(productAttributeSchema).optional(),
 
+  //prcinig iformations
+  base_price: z.string().regex(/^\d+(\.\d+)?$/, { message: "Base price should be number" }).transform(val => parseFloat(val)),
+  solds: z.array(productSaleSchema).optional(),
+  variants: z.array(productVariantSchema).optional(),
+
+
+
+
   // media informations
   thumbnail: z.instanceof(FileList).transform(file => file.length > 0 && Array.from(file)[0]).optional(),
   medias: z.instanceof(FileList).optional().transform(files => files && Array.from(files)),
-}).superRefine(({ type, attributes, thumbnail, medias }, ctx) => {
+}).superRefine(({ type, attributes, thumbnail, medias, variants }, ctx) => {
 
   if (type === "variant" && (!attributes || attributes.length < 1)) {
     ctx.addIssue({
@@ -59,11 +85,19 @@ const productSchema = z.object({
     })
   }
 
-  if(!medias || medias.length < 1){
+  if (!medias || medias.length < 1) {
     ctx.addIssue({
-      path:["medias"],
-      code:"custom",
-      message:"images of product is required"
+      path: ["medias"],
+      code: "custom",
+      message: "images of product is required"
+    })
+  }
+
+  if (type === "variant" && (!variants || variants.length < 1)) {
+    ctx.addIssue({
+      path: ["varaints"],
+      code: "custom",
+      message: "One variant at least is required for the variant product"
     })
   }
 })
@@ -73,6 +107,7 @@ const productSchema = z.object({
 type ProductFormValues = z.infer<typeof productSchema>;
 
 const CreateProductForm: React.FC = () => {
+  const [isProductForSale, setIsProductForSale] = useState(false);
   const form = useForm({
     resolver: zodResolver(productSchema),
   })
@@ -90,6 +125,11 @@ const CreateProductForm: React.FC = () => {
     control,
     name: "attributes",
   });
+
+  const { fields: SoldFeilds, append: appendSoldField, remove: removeSoldFeild } = useFieldArray({
+    control,
+    name: "solds"
+  })
 
   const { data: categories, isLoading: isCategoriesLoading, error: categoriesFetchError } = useCategories();
   // track the field state of important parts i need for ui logic
@@ -295,7 +335,7 @@ const CreateProductForm: React.FC = () => {
             <Box w={"full"} my={4} display={"flex"} alignItems={"center"} gap={3} flexWrap={"wrap"}>
               {medias && Array.from(medias).map((media, index) => (
                 <Box pos={"relative"} w={150} h={150} rounded={"md"} key={index}>
-                  <Image  w={"full"} h={"full"} rounded={"md"} src={URL.createObjectURL(media)} />
+                  <Image w={"full"} h={"full"} rounded={"md"} src={URL.createObjectURL(media)} />
 
                   <Button pos={"absolute"} colorPalette={"red"} variant={"surface"} top={0} right={0} onClick={() => {
                     const newMediaArray = Array.from(medias).filter((_media, j) => j !== index);
@@ -323,7 +363,77 @@ const CreateProductForm: React.FC = () => {
 
         {/* Pricing Tab */}
         <Tabs.Content value="Pricing">
-          Pricing
+
+          <Text fontWeight={"bold"}>Product Price Data</Text>
+
+          <Field.Root my={4} required invalid={!!errors.base_price?.message} disabled={isSubmitting}>
+            <Field.Label>Base Price <Field.RequiredIndicator /></Field.Label>
+            <InputGroup startElement="$">
+              <Input type="number" step={.25} {...register("base_price")} />
+            </InputGroup>
+            <Field.ErrorText>{errors.base_price?.message}</Field.ErrorText>
+          </Field.Root>
+
+          <Switch checked={isProductForSale} onCheckedChange={(e) => { setIsProductForSale(e.checked) }}>
+            Product For Sale?
+          </Switch>
+
+          {
+            isProductForSale && (
+              <Box w={"full"} my={4}>
+
+                <Box display={"flex"} justifyContent={"space-between"}>
+                  <Text fontWeight={"bold"}>Solds Offers</Text>
+                  <Button colorPalette={"green"} onClick={() => { appendSoldField({ ammount: "", from: "", name: "", to: "" }) }}>Add Offer</Button>
+
+                </Box>
+                {errors.solds?.root?.message && <Text color={"red.600"} my={4} fontSize={14}>{errors.solds.root.message}</Text>}
+
+                {SoldFeilds.map((field, index) => (
+                  <Box key={field.id} display={"flex"} gap={2} my={4}>
+                    <Field.Root required invalid={errors.solds && !!errors.solds[index]?.name}>
+                      <Field.Label>Name<Field.RequiredIndicator /></Field.Label>
+                      <InputGroup startElement={<BiSolidOffer />}>
+                        <Input type="text"  {...register(`solds.${index}.name`)} />
+                      </InputGroup>
+                      <Field.ErrorText>{errors.solds && errors.solds[index]?.name?.message}</Field.ErrorText>
+                    </Field.Root>
+                    <Field.Root required invalid={errors.solds && !!errors.solds[index]?.ammount}>
+                      <Field.Label>Ammount <Field.RequiredIndicator /></Field.Label>
+                      <InputGroup startElement="%">
+                        <Input type="number" step={25} {...register(`solds.${index}.ammount`)} />
+                      </InputGroup>
+                      <Field.ErrorText>{errors.solds && errors.solds[index]?.ammount?.message}</Field.ErrorText>
+
+                    </Field.Root>
+
+                    <Field.Root required invalid={errors.solds && !!errors.solds[index]?.from}>
+                      <Field.Label>From<Field.RequiredIndicator /></Field.Label>
+                      <Input type="date"  {...register(`solds.${index}.from`)} />
+
+                      <Field.ErrorText>{errors.solds && errors.solds[index]?.from?.message}</Field.ErrorText>
+                    </Field.Root>
+
+
+                    <Field.Root required invalid={errors.solds && !!errors.solds[index]?.to}>
+                      <Field.Label>To<Field.RequiredIndicator /></Field.Label>
+
+                      <Input type="date"  {...register(`solds.${index}.to`)} />
+
+                      <Field.ErrorText>{errors.solds && errors.solds[index]?.to?.message}</Field.ErrorText>
+                    </Field.Root>
+
+
+                    <Button w={"10px"} colorPalette={"red"} variant={"surface"} mt={"auto"} onClick={() => { removeSoldFeild(index) }}><IoIosClose /></Button>
+                  </Box>
+                ))}
+
+              </Box>
+            )
+          }
+
+
+
         </Tabs.Content>
       </Tabs.Root>
 
