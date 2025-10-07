@@ -2,26 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Tabs,
-  Button,
-  Input,
-  Field,
-  Textarea,
-  Box,
-  NativeSelect,
-  Text,
-  Image,
-  Span,
-  InputGroup,
-} from "@chakra-ui/react";
+import { Tabs, Button, Input, Field, Textarea, Box, NativeSelect, Text, Image, Span, InputGroup, Table } from "@chakra-ui/react";
 import { IoIosAdd, IoIosClose, IoIosSave, IoIosTrash } from "react-icons/io";
 import { FiPackage, FiImage, FiDollarSign } from "react-icons/fi";
 import RichTextEditor from "../ui/RichTextEditor";
 import useCategories from "@/hooks/queries/useCategories";
 import { IoCloudUpload } from "react-icons/io5";
 import { Switch } from "../ui/switch";
-import {  BiSolidOffer } from "react-icons/bi";
+import { BiCategory, BiSolidOffer } from "react-icons/bi";
 
 
 const productAttributeSchema = z.object({
@@ -59,6 +47,8 @@ const productSchema = z.object({
   //prcinig iformations
   base_price: z.string().regex(/^\d+(\.\d+)?$/, { message: "Base price should be number" }).transform(val => parseFloat(val)),
   solds: z.array(productSaleSchema).optional(),
+
+  // variants
   variants: z.array(productVariantSchema).optional(),
 
 
@@ -129,13 +119,16 @@ const CreateProductForm: React.FC = () => {
   const { fields: SoldFeilds, append: appendSoldField, remove: removeSoldFeild } = useFieldArray({
     control,
     name: "solds"
-  })
+  });
+
+  const { fields: variantsFields, append: appendVariantField, remove: removeVariantField } = useFieldArray({ control, name: "variants" });
 
   const { data: categories, isLoading: isCategoriesLoading, error: categoriesFetchError } = useCategories();
   // track the field state of important parts i need for ui logic
   const title = watch("title");
   const thumbnail = watch("thumbnail");
   const productType = watch("type");
+  const attributes = watch("attributes");
   const medias = watch("medias");
 
   // make auto slug generation based on title
@@ -149,7 +142,7 @@ const CreateProductForm: React.FC = () => {
   useEffect(() => {
     console.log(errors)
   },
-    [errors])
+    [errors]);
 
 
   const onSubmit = (data: ProductFormValues) => {
@@ -159,10 +152,18 @@ const CreateProductForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Tabs.Root defaultValue="General" variant="enclosed" size="md" my={4}>
-        <Tabs.List>
+        <Tabs.List pos={"sticky"} top={2} zIndex={600}>
           <Tabs.Trigger value="General">
             <FiPackage /> General
           </Tabs.Trigger>
+
+          {
+            productType === "variant" && <Tabs.Trigger value="Variants">
+              <BiCategory /> Variants
+            </Tabs.Trigger>
+          }
+
+
           <Tabs.Trigger value="Pricing">
             <FiDollarSign /> Pricing
           </Tabs.Trigger>
@@ -287,6 +288,60 @@ const CreateProductForm: React.FC = () => {
 
 
         </Tabs.Content>
+
+        {/* Variant Settinga Tab */}
+        {productType === "variant" && (
+          <Tabs.Content value="Variants">
+            <Table.ScrollArea w={"full"} my={4}>
+              <Table.Root>
+                <Table.Header>
+                  {attributes && attributes.length > 0 && attributes.map(attribute => <Table.ColumnHeader key={attribute.name}>{attribute.name}</Table.ColumnHeader>)}
+                  <Table.ColumnHeader>Stock</Table.ColumnHeader>
+                  <Table.ColumnHeader>Price</Table.ColumnHeader>
+                </Table.Header>
+
+                <Table.Body>
+
+                  {
+                    variantsFields.map((field, index) => (
+                      <Table.Row key={field.id}>
+                        {attributes && attributes.map(attribute => (
+                          <Table.Cell key={attribute.name}>
+                            <NativeSelect.Root>
+                              <NativeSelect.Field placeholder="Select option" {...register(`variants.${index}.combinaison.${attribute.name}`)}>
+                                {attribute.values.split(",").map(value => <option value={value}>{value}</option>)}
+                              </NativeSelect.Field>
+                              <NativeSelect.Indicator />
+                            </NativeSelect.Root>
+                          </Table.Cell>
+                        ))}
+                        <Table.Cell w={120}>
+                          <Field.Root invalid={!!(errors.variants && errors.variants[index]?.stock)} required>
+                            <Input type="number" {...register(`variants.${index}.stock`)} />
+                          </Field.Root>
+                        </Table.Cell>
+                        <Table.Cell width={120}>
+                          <Field.Root invalid={!!(errors.variants && errors.variants[index]?.price)} required>
+                            <InputGroup startElement="$">
+                              <Input type="number" {...register(`variants.${index}.price`)} />
+                            </InputGroup>
+                          </Field.Root>
+                        </Table.Cell>
+                      </Table.Row>
+                    ))
+                  }
+
+                </Table.Body>
+              </Table.Root>
+
+            </Table.ScrollArea>
+            <Box w={"full"} display={"flex"} justifyContent={"end"}>
+              <Button colorPalette={"green"} onClick={() => { appendVariantField({ stock: "0", price: "0", combinaison: {} }) }}> <IoIosAdd /> Add Variant</Button>
+
+            </Box>
+          </Tabs.Content>
+
+        )}
 
         {/* Media Tab */}
         <Tabs.Content value="Media">
