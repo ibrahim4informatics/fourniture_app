@@ -1,6 +1,7 @@
 import CreateProductForm from "@/components/forms/CreateProductForm"
 import ProductsTable from "@/components/ui/dashboard/products/ProductsTable"
 import ProductsTopSection from "@/components/ui/dashboard/products/ProductsTopSection"
+import ShowProductDetails from "@/components/ui/dashboard/products/ShowProductDetails"
 import Modale from "@/components/ui/Modale"
 import useProductsQuery from "@/hooks/queries/useProductsQuery"
 import { useAppDispatch, useAppSelector } from "@/hooks/stateHooks"
@@ -21,6 +22,7 @@ const ProductsManagement = () => {
 
 
     const showCreateProductForm = useAppSelector(state => state.dahsboard.showCreateProductForm);
+    const shownProductId = useAppSelector(state => state.dahsboard.productShownId)
     const dispatch = useAppDispatch();
     return (
         <DashboardLayout>
@@ -33,6 +35,10 @@ const ProductsManagement = () => {
 
 
             <AnimatePresence>
+                {
+
+                    shownProductId && <ShowProductDetails product_id={shownProductId} initial={{ right: "-100%" }} animate={{ right: 0 }} exit={{right:"-100%"}} />
+                }
                 {showCreateProductForm && (
                     <Modale
                         bg={"white"} w={"full"} maxW={650} px={6} rounded={{ base: "none", md: 8 }}
@@ -42,7 +48,7 @@ const ProductsManagement = () => {
 
                     >
 
-                        <Box pt={6}  bg={"white"} zIndex={100} w={"full"} mb={4} display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
+                        <Box pt={6} bg={"white"} zIndex={100} w={"full"} mb={4} display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
                             <Text fontSize={24} fontWeight={"bold"}>New Product</Text>
                             <Button variant={"subtle"} colorPalette={"red"} onClick={() => { dispatch(toggleCreateProductForm("hide")) }}><IoIosClose /></Button>
 

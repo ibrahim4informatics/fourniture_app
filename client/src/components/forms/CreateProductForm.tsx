@@ -28,7 +28,7 @@ const productSaleSchema = z.object({
 })
 
 const productVariantSchema = z.object({
-  combinaison: z.record(z.string(), z.string()),
+  combinaison: z.record(z.string().min(3).max(100), z.string().min(1).max(100)),
   stock: z.string().regex(/\d+/).transform(val => parseInt(val)),
   price: z.string().regex(/^\d+(\.\d+)?$/, { message: "price should be number" }).transform(val => parseFloat(val)),
 })
@@ -84,12 +84,14 @@ const productSchema = z.object({
   }
 
   if (type === "variant" && (!variants || variants.length < 1)) {
+
     ctx.addIssue({
-      path: ["varaints"],
+      path: ["variants"],
       code: "custom",
       message: "One variant at least is required for the variant product"
     })
   }
+
 })
 
 
@@ -158,7 +160,7 @@ const CreateProductForm: React.FC = () => {
           </Tabs.Trigger>
 
           {
-            productType === "variant" && <Tabs.Trigger value="Variants">
+            productType === "variant" && attributes && attributes?.length > 0 && <Tabs.Trigger value="Variants">
               <BiCategory /> Variants
             </Tabs.Trigger>
           }
@@ -290,14 +292,16 @@ const CreateProductForm: React.FC = () => {
         </Tabs.Content>
 
         {/* Variant Settinga Tab */}
-        {productType === "variant" && (
+        {productType === "variant" && attributes && attributes?.length > 0 && (
           <Tabs.Content value="Variants">
+            {errors.variants?.root?.message && <Text fontSize={14} color={"red.600"}>{errors.variants.root.message}</Text>}
             <Table.ScrollArea w={"full"} my={4}>
               <Table.Root>
                 <Table.Header>
                   {attributes && attributes.length > 0 && attributes.map(attribute => <Table.ColumnHeader key={attribute.name}>{attribute.name}</Table.ColumnHeader>)}
                   <Table.ColumnHeader>Stock</Table.ColumnHeader>
                   <Table.ColumnHeader>Price</Table.ColumnHeader>
+                  <Table.ColumnHeader>#</Table.ColumnHeader>
                 </Table.Header>
 
                 <Table.Body>
@@ -313,6 +317,10 @@ const CreateProductForm: React.FC = () => {
                               </NativeSelect.Field>
                               <NativeSelect.Indicator />
                             </NativeSelect.Root>
+                            {
+                              errors.variants && errors.variants[index] && errors.variants[index].combinaison && errors.variants[index].combinaison[attribute.name]?.message
+                              && <Text color={"red.600"} fontSize={14}>{errors.variants[index].combinaison[attribute.name]!.message}</Text>
+                            }
                           </Table.Cell>
                         ))}
                         <Table.Cell w={120}>
@@ -326,6 +334,10 @@ const CreateProductForm: React.FC = () => {
                               <Input type="number" {...register(`variants.${index}.price`)} />
                             </InputGroup>
                           </Field.Root>
+                        </Table.Cell>
+
+                        <Table.Cell>
+                          <Button colorPalette={"red"} variant={"surface"} onClick={() => removeVariantField(index)}><IoIosTrash /></Button>
                         </Table.Cell>
                       </Table.Row>
                     ))

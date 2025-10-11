@@ -33,7 +33,7 @@ const getProducts = async (filters?: any) => {
 }
 
 
-const getProductByID = async (id: number) => {
+const getProductByID = async (id: number|string) => {
     const { data } = await axios.get("/data/products.json");
     const product = data.products.filter((product: any) => product.id === id);
     if (product.length > 0) {
